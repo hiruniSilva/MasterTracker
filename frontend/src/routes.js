@@ -6,6 +6,7 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './pages/Login';
 import User from './pages/User';
 import NotFound from './pages/Page404';
+import MasterTrack from './pages/MasterTrack';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +17,8 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/user" replace /> },
-        { path: 'user', element: <User /> }
+        { path: 'user', element: <User /> },
+        { path: 'mastertrack', element: <MasterTrack /> }
       ]
     },
     {
