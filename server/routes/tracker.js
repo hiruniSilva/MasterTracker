@@ -43,8 +43,29 @@ router.get("/getCurrencyCode", async (req, res) => {
 
 router.get("/getMasterTrack", async (req, res) => {
 	try {
-		const masterTracks = await models.MasterTrack.findAll();
+		const aidVal = req.query.aid
+		const emailVal = req.query.email
+		
+		const whereObject = {
+		}
+
+		if(aidVal) whereObject.Aid = aidVal
+		if(emailVal) whereObject.Email = emailVal
+
+		const masterTracks = await models.MasterTrack.findAll({
+			where : whereObject
+		});
+
 		res.status(201).json(masterTracks);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/getDatabaseNames", async (req, res) => {
+	try {
+		const databases = await models.Database.findAll();
+		res.status(201).json(databases);
 	} catch (error) {
 		res.status(400).send(error.message);
 	}
@@ -53,6 +74,19 @@ router.get("/getMasterTrack", async (req, res) => {
 router.post("/addMasterTrack", async (req, res) => {
 	try {
 		const { bi, leadSource, brand, aid, dateFtd, email, ftdAmount, currCode, salesAgent, retention } = req.body
+		const isValid = models.MasterTrack.validateMasterData({
+			bi, 
+			leadSource, 
+			brand, 
+			aid, 
+			dateFtd,
+			email, 
+			ftdAmount, 
+			currCode, 
+			salesAgent, 
+			retention
+		});
+		if (!isValid) throw new Error("Invalid Data. Please try again !!");
 		const addMasterTrack = await models.MasterTrack.create(
 			{
 				BI: bi, LeadSource: leadSource, Brand: brand, Aid: aid, DateFTD: dateFtd, Email: email, FTDAmount: ftdAmount, CurrencyCode: currCode, SalesAgent: salesAgent, Retention: retention
@@ -62,6 +96,43 @@ router.post("/addMasterTrack", async (req, res) => {
 		res.status(400).send(error.message);
 	}
 });
+
+router.put("/updateDatabase", async (req,res) => {
+	try{
+		const {id, dbVal} = req.body
+		const masterRecord = await models.MasterTrack.findOne({
+			where: {
+			  id: id
+			}
+		  });
+		masterRecord.Database = dbVal
+		await masterRecord.save()
+		res.status(201).json(masterRecord);
+	}catch(error){
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/getMasterTrackersOfDb", async (req, res) => {
+	try {
+		const lsNames = await models.LeadSource.findAll({
+			where: {
+				LeadSourceName: ["VA First", "VA Second"],
+			}
+		})
+
+		const masterTracks = await models.MasterTrack.findAll({
+			where: {
+				LeadSource: lsNames.map(i=>i.id)
+			  }
+		});
+
+		res.status(201).json(masterTracks);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 
 
 export default router;
