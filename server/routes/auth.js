@@ -3,14 +3,18 @@ import models from "../models";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/login", async (req, res) => {
 	try {
-		const { name, email, password } = req.body;
-		// const user = await models.User.create({ name, email, password });
+		const { email, password } = req.body;
 
-		res.status(201).json({
-			message: "User created successfully",
-			data:  { name, email, password }
+		const user = await models.User.findOne({ where: { email } });
+		if (!user) throw new Error("Incorrect Email or Password");
+		const validPassword = await user.comparePassword(password);
+		if (!validPassword) throw new Error("Incorrect Email or Password");
+
+		res.status(200).json({
+			tokens: user.generateTokens(),
+			user: user.toUserJson(),
 		});
 	} catch (error) {
 		res.status(400).send(error.message);

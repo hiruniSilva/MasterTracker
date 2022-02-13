@@ -81,14 +81,14 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
           />
 
           <Link component={RouterLink} variant="subtitle2" to="#">
             Forgot password?
-          </Link>
+          </Link> */}
         </Stack>
 
         <LoadingButton
