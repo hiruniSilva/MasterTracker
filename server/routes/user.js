@@ -1,4 +1,5 @@
 import express from "express";
+import { validateToken } from "../middlewares/auth";
 import models from "../models";
 
 const router = express.Router();
@@ -12,6 +13,14 @@ router.get("/all", async (req, res) => {
 	}
 });
 
+router.get("/current", validateToken, async (req, res) => {
+	const user = await models.User.findOne({
+		where: {
+			id: req.user.id
+		}
+	});
+	res.send(user ? user.toUserJson() : null)
+});
 
 router.post("/create", async (req, res) => {
 	try {

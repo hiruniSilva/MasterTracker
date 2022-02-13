@@ -4,11 +4,14 @@ import 'simplebar/src/simplebar.css';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { ToastContainer } from 'react-toastify';
 
 //
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +19,7 @@ ReactDOM.render(
   <HelmetProvider>
     <BrowserRouter>
       <App />
+      <ToastContainer />
     </BrowserRouter>
   </HelmetProvider>,
   document.getElementById('root')

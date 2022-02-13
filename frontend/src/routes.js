@@ -23,7 +23,7 @@ export default function Router() {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
-        { element: <Navigate to="/login" replace /> },
+        { element: <Navigate to="/dashboard" replace /> },
         { path: 'login', element: <Login /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" /> }

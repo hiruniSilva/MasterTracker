@@ -16,12 +16,17 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
+import axios from '../../../services/api.service';
+import { currentUserState } from '../../../services/auth.service';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const setCurrentUser = useSetRecoilState(currentUserState);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -31,12 +36,21 @@ export default function LoginForm() {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
-      remember: true
+      password: ''
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (data) => {
+      axios
+        .post('/api/auth/login', data)
+        .then((res) => {
+          setCurrentUser(res.data.user);
+          toast.success(`Welcome ${res.data.user.fullname}`);
+          navigate('/dashboard/user');
+        })
+        .catch((err) => {
+          toast.error('Incorrect Email or Password');
+          formik.setSubmitting(false);
+        });
     }
   });
 

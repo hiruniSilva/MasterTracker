@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
+import { useRecoilValue } from 'recoil';
+
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
+import { currentUserState } from '../../services/auth.service';
 
 // ----------------------------------------------------------------------
 
@@ -34,8 +37,8 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-
-  return (
+  const currentUser = useRecoilValue(currentUserState);
+  return currentUser ? (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
@@ -43,5 +46,7 @@ export default function DashboardLayout() {
         <Outlet />
       </MainStyle>
     </RootStyle>
+  ) : (
+    <Navigate to="/login" replace />
   );
 }

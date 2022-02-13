@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     generateTokens() {
       let payload = {
         id: this.id,
-        username: this.username 
+        username: this.username,
+        roles: this.roles
       }
       let accessToken = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, {
         algorithm: "HS256",
