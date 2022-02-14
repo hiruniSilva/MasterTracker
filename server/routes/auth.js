@@ -23,4 +23,13 @@ router.post("/login", async (req, res) => {
 	}
 });
 
+router.get("/logout", async (req, res) => {
+	try {
+		res.clearCookie("token");
+		res.status(200).send("User Logged Out");
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 export default router;

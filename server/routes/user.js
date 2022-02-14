@@ -71,4 +71,38 @@ router.post("/update", async (req, res) => {
 	}
 });
 
+
+router.post("/password-reset", async (req, res) => {
+	try {
+		const { id, password } = req.body;
+        const user = await models.User.findOne({
+            where: {id}
+        })
+        if (!user) throw new Error("Invalid User");
+        const isValid = models.User.validatePassword(password)
+        if (!isValid) throw new Error("Invalid Data");
+        user.set({
+			passwordHash: await models.User.hashPassword(password),
+		});
+        await user.save()
+		res.status(200).json(user.toUserJson());
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.delete("/delete", async (req, res) => {
+	try {
+		const { id } = req.query;
+        const user = await models.User.findOne({
+            where: {id}
+        })
+        if (!user) throw new Error("Invalid User");
+        await user.destroy();
+		res.status(200).json(user.toUserJson());
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 export default router;

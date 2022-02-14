@@ -22,14 +22,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  TextField,
   DialogActions,
-  Select,
-  OutlinedInput,
-  Chip,
-  MenuItem,
-  FormControl,
-  InputLabel
+  DialogContentText
 } from '@mui/material';
 
 import editFill from '@iconify/icons-eva/edit-fill';
@@ -42,6 +36,7 @@ import Scrollbar from '../components/Scrollbar';
 import axios from '../services/api.service';
 import { UserMoreMenu } from '../components/_dashboard/user';
 import UserEditForm from '../components/UserForm';
+import UserPasswordForm from '../components/UserPasswordForm';
 
 const TABLE_HEAD = [
   { id: 'fullname', label: 'Name', alignRight: false },
@@ -54,6 +49,7 @@ const TABLE_HEAD = [
 export default function User() {
   const [USERLIST, setUserList] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [passwordReset, setPasswordReset] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
 
   const handleSubmit = useCallback(
@@ -84,6 +80,34 @@ export default function User() {
     },
     [selectedUser]
   );
+
+  const handlePasswordReset = useCallback(
+    (data) => {
+      axios
+        .post('/api/user/password-reset', { id: passwordReset.id, ...data })
+        .then((res) => {
+          toast.success('User password reset successfully');
+          setPasswordReset(null);
+        })
+        .catch((err) => {
+          toast.error('Something went wrong. Please try agin later !');
+        });
+    },
+    [passwordReset]
+  );
+
+  const handleDelete = useCallback(() => {
+    axios
+      .delete(`/api/user/delete?id=${deleteUser.id}`)
+      .then((res) => {
+        toast.success('User deleted successfully');
+        setDeleteUser(null);
+        fetchData();
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  }, [deleteUser]);
 
   const fetchData = useCallback(() => {
     axios
@@ -165,10 +189,16 @@ export default function User() {
                                 onClick: () => setSelectedUser({ id, fullname, email, roles })
                               },
                               {
+                                key: 'password-reset',
+                                icon: <Icon icon={editFill} width={24} height={24} />,
+                                text: 'Password Reset',
+                                onClick: () => setPasswordReset({ id })
+                              },
+                              {
                                 key: 'delete',
                                 icon: <Icon icon={trash2Outline} width={24} height={24} />,
                                 text: 'Delete',
-                                onClick: () => {}
+                                onClick: () => setDeleteUser({ id })
                               }
                             ]}
                           />
@@ -190,6 +220,26 @@ export default function User() {
               setSelectedUser={setSelectedUser}
             />
           )}
+        </Dialog>
+        <Dialog open={!!passwordReset} onClose={() => setPasswordReset(null)}>
+          {passwordReset && (
+            <UserPasswordForm
+              handleSubmit={handlePasswordReset}
+              setPasswordReset={setPasswordReset}
+            />
+          )}
+        </Dialog>
+        <Dialog open={!!deleteUser} onClose={() => setDeleteUser(null)}>
+          <DialogTitle>Delete user</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Are you sure you want to delete this user ?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDeleteUser(null)}>No</Button>
+            <Button onClick={handleDelete} autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
         </Dialog>
       </Container>
     </Page>
