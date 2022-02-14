@@ -53,7 +53,8 @@ router.get("/getMasterTrack", async (req, res) => {
 		if(emailVal) whereObject.Email = emailVal
 
 		const masterTracks = await models.MasterTrack.findAll({
-			where : whereObject
+			where : whereObject,
+			include: [{ all: true }]
 		});
 
 		res.status(201).json(masterTracks);
@@ -124,7 +125,8 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 		const masterTracks = await models.MasterTrack.findAll({
 			where: {
 				LeadSource: lsNames.map(i=>i.id)
-			  }
+			  },
+			  include: [{ all: true }]
 		});
 
 		res.status(201).json(masterTracks);
