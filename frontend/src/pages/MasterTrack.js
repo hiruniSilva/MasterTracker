@@ -1,172 +1,113 @@
-import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
-import { sentenceCase } from 'change-case';
-import { useState } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 // material
 import {
-  Card,
-  Table,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
   Stack,
-  Avatar,
   Button,
-  Checkbox,
-  TableRow,
-  TableBody,
-  TableCell,
   Container,
   Typography,
-  TableContainer,
-  TablePagination
+  TextField,
+  MenuItem
 } from '@mui/material';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+
 // components
 import Page from '../components/Page';
-import Label from '../components/Label';
-import Scrollbar from '../components/Scrollbar';
-import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
-//
-import USERLIST from '../_mocks_/user';
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
-
-// ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+import axios from '../services/api.service';
 
 export default function MasterTrack() {
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [BiList, setBiList] = useState([]);
+  const [value, setValue] = useState(null);
+  const [LeadSource, setLeadSource] = useState([]);
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isUserNotFound = filteredUsers.length === 0;
+  useEffect(() => {
+    axios
+      .get('/api/tracker/getBI')
+      .then((res) => {
+        setBiList(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  }, []);
 
   return (
-    <Page title="User | Minimal-UI">
+    <Page title="Master Tracker | Minimal-UI">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Master Tracker
           </Typography>
         </Stack>
-
-        <Card>
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        />
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
+        <FormControl fullWidth margin="dense">
+          <InputLabel id="multiple-role-label">BI</InputLabel>
+          <Select labelId="multiple-role-label" input={<OutlinedInput label="Name" />}>
+            {BiList.map((bi) => (
+              <MenuItem value={bi.id}>{bi.BIName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth margin="dense">
+          <InputLabel id="multiple-role-label">Lead Source</InputLabel>
+          <Select labelId="multiple-role-label" input={<OutlinedInput label="Name" />}>
+            <MenuItem value="test_1">Test_1</MenuItem>
+            <MenuItem value="test_2">Test_2</MenuItem>
+            <MenuItem value="test_3">Test_3</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth margin="dense">
+          <InputLabel id="multiple-role-label">Brand</InputLabel>
+          <Select labelId="multiple-role-label" input={<OutlinedInput label="Name" />}>
+            <MenuItem value="test_1">Test_1</MenuItem>
+            <MenuItem value="test_2">Test_2</MenuItem>
+            <MenuItem value="test_3">Test_3</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField margin="dense" label="Aid" type="text" fullWidth />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            fullWidth
+            margin="dense"
+            label="Date FTD"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <TextField margin="dense" label="Email" type="email" fullWidth />
+        <TextField margin="dense" label="FTD Amount" type="number" fullWidth />
+        <FormControl fullWidth margin="dense">
+          <InputLabel id="multiple-role-label">Currency Code</InputLabel>
+          <Select labelId="multiple-role-label" input={<OutlinedInput label="Name" />}>
+            <MenuItem value="test_1">test1</MenuItem>
+            <MenuItem value="test_2">test1</MenuItem>
+            <MenuItem value="test_3">test1</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField margin="dense" label="Sales Agent" type="text" fullWidth />
+        <FormControl fullWidth margin="dense">
+          <InputLabel id="multiple-role-label">Retention</InputLabel>
+          <Select labelId="multiple-role-label" input={<OutlinedInput label="Name" />}>
+            <MenuItem value="test_1">Premium Support</MenuItem>
+            <MenuItem value="test_2">Own</MenuItem>
+          </Select>
+        </FormControl>{' '}
+        <br />
+        <br />
+        <Stack direction="row" spacing={2}>
+          <Button fullWidth margin="dense" variant="contained">
+            Submit
+          </Button>
+        </Stack>
       </Container>
     </Page>
   );
