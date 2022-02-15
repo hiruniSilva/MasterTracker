@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/all", async (req, res) => {
 	try {
-        const users = await models.User.findAll();
+        const users = await models.User.findAll({ include: { all: true } });
 		res.status(200).json(users.map(user=>user.toUserJson()));
 	} catch (error) {
 		res.status(400).send(error.message);
@@ -24,7 +24,7 @@ router.get("/current", validateToken, async (req, res) => {
 
 router.post("/create", async (req, res) => {
 	try {
-		const { fullname, email, password, roles } = req.body;
+		const { fullname, email, password, roles, teams } = req.body;
 
         const isValid = models.User.validateUserData({
 			fullname,
@@ -39,6 +39,12 @@ router.post("/create", async (req, res) => {
 			roles,
 			passwordHash: await models.User.hashPassword(password),
 		});
+		const bis = await models.BI.findAll({
+			where: {
+				id: teams || [],
+			},
+		});
+		await user.setBIs(bis);
 		res.status(200).json(user.toUserJson());
 	} catch (error) {
 		res.status(400).send(error.message);
@@ -48,7 +54,7 @@ router.post("/create", async (req, res) => {
 
 router.post("/update", async (req, res) => {
 	try {
-		const { id, fullname, email, roles } = req.body;
+		const { id, fullname, email, roles, teams } = req.body;
         const user = await models.User.findOne({
             where: {id}
         })
@@ -64,6 +70,12 @@ router.post("/update", async (req, res) => {
 			email,
 			roles,
 		});
+		const bis = await models.BI.findAll({
+			where: {
+				id: teams || [],
+			},
+		});
+		await user.setBIs(bis);
         await user.save()
 		res.status(200).json(user.toUserJson());
 	} catch (error) {

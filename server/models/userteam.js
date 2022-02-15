@@ -3,27 +3,28 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class BI extends Model {
+  class UserTeam extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      BI.hasMany(models.MasterTrack,{foreignKey:"BI"})
-      BI.belongsToMany(models.User, {
+      UserTeam.belongsTo(models.User, { 
+        foreignKey: 'user', 
+      });
+      UserTeam.belongsTo(models.BI, { 
         foreignKey: 'bi', 
-        through: 'UserTeams',
-        timestamps: false
       });
     }
   }
-  BI.init({
-    BIName: DataTypes.STRING
+  UserTeam.init({
+    user: DataTypes.INTEGER,
+    bi: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'BI',
-    timestamps:false
+    modelName: 'UserTeam',
+    timestamps: false
   });
-  return BI;
+  return UserTeam;
 };

@@ -1,5 +1,6 @@
 import express from "express";
 import models from "../models";
+import { validateToken } from "../middlewares/auth";
 
 const router = express.Router();
 
@@ -7,7 +8,6 @@ router.get("/getBI", async (req, res) => {
 	try {
 		const bis = await models.BI.findAll();
 		res.status(201).json(bis);
-
 	} catch (error) {
 		res.status(400).send(error.message);
 	}
@@ -40,21 +40,19 @@ router.get("/getCurrencyCode", async (req, res) => {
 	}
 });
 
-
 router.get("/getMasterTrack", async (req, res) => {
 	try {
-		const aidVal = req.query.aid
-		const emailVal = req.query.email
-		
-		const whereObject = {
-		}
+		const aidVal = req.query.aid;
+		const emailVal = req.query.email;
 
-		if(aidVal) whereObject.Aid = aidVal
-		if(emailVal) whereObject.Email = emailVal
+		const whereObject = {};
+
+		if (aidVal) whereObject.Aid = aidVal;
+		if (emailVal) whereObject.Email = emailVal;
 
 		const masterTracks = await models.MasterTrack.findAll({
-			where : whereObject,
-			include: [{ all: true }]
+			where: whereObject,
+			include: [{ all: true }],
 		});
 
 		res.status(201).json(masterTracks);
@@ -74,42 +72,50 @@ router.get("/getDatabaseNames", async (req, res) => {
 
 router.post("/addMasterTrack", async (req, res) => {
 	try {
-		const { bi, leadSource, brand, aid, dateFtd, email, ftdAmount, currCode, salesAgent, retention } = req.body
+		const { bi, leadSource, brand, aid, dateFtd, email, ftdAmount, currCode, salesAgent, retention } = req.body;
 		const isValid = models.MasterTrack.validateMasterData({
-			bi, 
-			leadSource, 
-			brand, 
-			aid, 
+			bi,
+			leadSource,
+			brand,
+			aid,
 			dateFtd,
-			email, 
-			ftdAmount, 
-			currCode, 
-			salesAgent, 
-			retention
+			email,
+			ftdAmount,
+			currCode,
+			salesAgent,
+			retention,
 		});
 		if (!isValid) throw new Error("Invalid Data. Please try again !!");
-		const addMasterTrack = await models.MasterTrack.create(
-			{
-				BI: bi, LeadSource: leadSource, Brand: brand, Aid: aid, DateFTD: dateFtd, Email: email, FTDAmount: ftdAmount, CurrencyCode: currCode, SalesAgent: salesAgent, Retention: retention
-			});
+		const addMasterTrack = await models.MasterTrack.create({
+			BI: bi,
+			LeadSource: leadSource,
+			Brand: brand,
+			Aid: aid,
+			DateFTD: dateFtd,
+			Email: email,
+			FTDAmount: ftdAmount,
+			CurrencyCode: currCode,
+			SalesAgent: salesAgent,
+			Retention: retention,
+		});
 		res.status(201).json(addMasterTrack);
 	} catch (error) {
 		res.status(400).send(error.message);
 	}
 });
 
-router.put("/updateDatabase", async (req,res) => {
-	try{
-		const {id, dbVal} = req.body
+router.put("/updateDatabase", async (req, res) => {
+	try {
+		const { id, dbVal } = req.body;
 		const masterRecord = await models.MasterTrack.findOne({
 			where: {
-			  id: id
-			}
-		  });
-		masterRecord.Database = dbVal
-		await masterRecord.save()
+				id: id,
+			},
+		});
+		masterRecord.Database = dbVal;
+		await masterRecord.save();
 		res.status(201).json(masterRecord);
-	}catch(error){
+	} catch (error) {
 		res.status(400).send(error.message);
 	}
 });
@@ -119,14 +125,14 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 		const lsNames = await models.LeadSource.findAll({
 			where: {
 				LeadSourceName: ["VA First", "VA Second"],
-			}
-		})
+			},
+		});
 
 		const masterTracks = await models.MasterTrack.findAll({
 			where: {
-				LeadSource: lsNames.map(i=>i.id)
-			  },
-			  include: [{ all: true }]
+				LeadSource: lsNames.map((i) => i.id),
+			},
+			include: [{ all: true }],
 		});
 
 		res.status(201).json(masterTracks);
@@ -135,6 +141,25 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 	}
 });
 
+router.get("/getUserView", validateToken, async (req, res) => {
+	try {
+		const teams = await models.UserTeam.findAll({
+			where: {
+				user: req.user.id,
+			},
+		});
 
+		const masterTracks = await models.MasterTrack.findAll({
+			where: {
+				BI: teams.map((i) => i.bi),
+			},
+			include: [{ all: true }],
+		});
+
+		res.status(201).json(masterTracks);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
 
 export default router;

@@ -78,7 +78,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection
+        navConfig={sidebarConfig.filter((item) => currentUser.roles.includes(item.access))}
+      />
 
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>

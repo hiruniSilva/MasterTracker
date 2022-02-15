@@ -39,7 +39,7 @@ export default function View() {
 
   useEffect(() => {
     axios
-      .get('/api/tracker/getMasterTrack')
+      .get('/api/tracker/getUserView')
       .then((res) => {
         setUserList(res.data);
       })
