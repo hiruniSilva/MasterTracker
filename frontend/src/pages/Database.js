@@ -1,5 +1,5 @@
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 
@@ -15,7 +15,10 @@ import {
   Container,
   Typography,
   TableContainer,
-  TableHead
+  TableHead,
+  FormControl,
+  Select,
+  MenuItem
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -36,6 +39,7 @@ const TABLE_HEAD = [
 
 export default function Database() {
   const [USERLIST, setUserList] = useState([]);
+  const [databases, setDatabases] = useState([]);
 
   useEffect(() => {
     axios
@@ -46,7 +50,25 @@ export default function Database() {
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
       });
+
+    axios
+      .get('/api/tracker/getDatabaseNames')
+      .then((res) => {
+        setDatabases(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
   }, []);
+
+  const handleDatabaseChange = useCallback((id, value) => {
+    axios
+      .put('/api/tracker/updateDatabase', { id, dbVal: value })
+      .then((res) => {})
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  });
 
   return (
     <Page title="Database | Minimal-UI">
@@ -91,7 +113,18 @@ export default function Database() {
                         <TableCell align="left">{Email}</TableCell>
                         <TableCell align="left">{BIvalue?.BIName}</TableCell>
                         <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
-                        <TableCell align="left">{DatabaseValue?.dbName}</TableCell>
+                        <TableCell align="left">
+                          <FormControl fullWidth>
+                            <Select
+                              value={DatabaseValue?.id}
+                              onChange={(event) => handleDatabaseChange(id, event.target.value)}
+                            >
+                              {databases.map((database) => (
+                                <MenuItem value={database.id}>{database.dbName}</MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
                         <TableCell align="left">
                           {CurrencyValue?.CurrencyCode} {FTDAmount}
                         </TableCell>
