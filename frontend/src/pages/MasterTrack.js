@@ -84,7 +84,7 @@ export default function MasterTrack() {
       leadSource: '',
       brand: '',
       aid: '',
-      dateFtd: null,
+      dateFtd: new Date('2022-02-15'),
       email: '',
       ftdAmount: '',
       currCode: '',
