@@ -55,6 +55,7 @@ export default function User() {
   const handleSubmit = useCallback(
     (data) => {
       if (selectedUser.id) {
+        console.log({ id: selectedUser.id, ...data });
         axios
           .post('/api/user/update', { id: selectedUser.id, ...data })
           .then((res) => {
@@ -159,7 +160,7 @@ export default function User() {
                 </TableHead>
                 <TableBody>
                   {USERLIST.map((row) => {
-                    const { id, fullname, email, roles, createdAt } = row;
+                    const { id, fullname, email, roles, BIs, createdAt } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>
                         <TableCell component="th" scope="row">
@@ -186,7 +187,14 @@ export default function User() {
                                 key: 'edit',
                                 icon: <Icon icon={editFill} width={24} height={24} />,
                                 text: 'Edit',
-                                onClick: () => setSelectedUser({ id, fullname, email, roles })
+                                onClick: () =>
+                                  setSelectedUser({
+                                    id,
+                                    fullname,
+                                    email,
+                                    roles,
+                                    teams: BIs.map((i) => i.id)
+                                  })
                               },
                               {
                                 key: 'password-reset',
