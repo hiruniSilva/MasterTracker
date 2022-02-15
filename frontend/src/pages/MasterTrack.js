@@ -80,16 +80,16 @@ export default function MasterTrack() {
 
   const formik = useFormik({
     initialValues: {
-      bi: '1',
-      leadSource: '1',
-      brand: '2',
-      aid: '3',
-      dateFtd: new Date('2022-02-15'),
-      email: '4',
-      ftdAmount: '4',
-      currCode: '3',
-      salesAgent: '3',
-      retention: 'own'
+      bi: '',
+      leadSource: '',
+      brand: '',
+      aid: '',
+      dateFtd: null,
+      email: '',
+      ftdAmount: '',
+      currCode: '',
+      salesAgent: '',
+      retention: ''
     },
     validationSchema: UserSchema,
     onSubmit: (data) => {

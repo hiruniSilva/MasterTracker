@@ -23,11 +23,11 @@ const sidebarConfig = [
     path: '/login',
     icon: getIcon(lockFill)
   },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon(alertTriangleFill)
-  },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: getIcon(alertTriangleFill)
+  // },
   {
     title: 'Master Tracker',
     path: '/dashboard/mastertrack',
