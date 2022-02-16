@@ -19,12 +19,15 @@ import {
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import { useNavigate } from 'react-router-dom';
 
 // components
 import Page from '../components/Page';
 import axios from '../services/api.service';
 
 export default function MasterTrack() {
+  const navigate = useNavigate();
+
   const [BiList, setBiList] = useState([]);
   const [LeadSourceList, setLeadSource] = useState([]);
   const [BrandList, setBrandList] = useState([]);
@@ -93,7 +96,16 @@ export default function MasterTrack() {
     },
     validationSchema: UserSchema,
     onSubmit: (data) => {
-      // handleSubmit(data);
+      axios
+        .post('/api/tracker/addMasterTrack', data)
+        .then((res) => {
+          toast.success(`Master Track added successfully`);
+          navigate('/dashboard/search');
+        })
+        .catch((err) => {
+          toast.error('Something went wrong. Please try agin later !');
+          formik.setSubmitting(false);
+        });
     }
   });
 
@@ -153,7 +165,9 @@ export default function MasterTrack() {
             />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                {...formik.getFieldProps('dateFtd')}
+                // {...formik.getFieldProps('dateFtd')}
+                value={formik.values.dateFtd}
+                onChange={(value) => formik.setFieldValue('dateFtd', value)}
                 label="Date FTD"
                 renderInput={(params) => <TextField fullWidth margin="dense" {...params} />}
               />
@@ -205,7 +219,7 @@ export default function MasterTrack() {
             <br />
             <br />
             <Stack direction="row" spacing={2}>
-              <Button fullWidth margin="dense" variant="contained">
+              <Button type="submit" fullWidth margin="dense" variant="contained">
                 Submit
               </Button>
             </Stack>
