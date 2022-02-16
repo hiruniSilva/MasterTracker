@@ -14,7 +14,8 @@ import {
   Container,
   Typography,
   TextField,
-  MenuItem
+  MenuItem,
+  FormHelperText
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -78,16 +79,16 @@ export default function MasterTrack() {
   }, []);
 
   const UserSchema = Yup.object().shape({
-    bi: Yup.string().required(),
-    leadSource: Yup.string().required(),
-    brand: Yup.string().required(),
-    aid: Yup.string().required(),
-    dateFtd: Yup.date().default(),
-    email: Yup.string().email().required(),
-    ftdAmount: Yup.number().required().positive(),
-    currCode: Yup.string().required(),
-    salesAgent: Yup.string().required(),
-    retention: Yup.string().required()
+    bi: Yup.string().required('Required !'),
+    leadSource: Yup.string().required('Required !'),
+    brand: Yup.string().required('Required !'),
+    aid: Yup.string().required('Required !'),
+    dateFtd: Yup.date().nullable().required('Required !'),
+    email: Yup.string().email('Please enter a valid email').required('Required !'),
+    ftdAmount: Yup.number().required('Please enter valid FTD amount').positive('Required !'),
+    currCode: Yup.string().required('Required !'),
+    salesAgent: Yup.string().required('Required'),
+    retention: Yup.string().required('Required !')
   });
 
   const formik = useFormik({
@@ -134,11 +135,15 @@ export default function MasterTrack() {
                 {...formik.getFieldProps('bi')}
                 labelId="multiple-role-label"
                 input={<OutlinedInput label="Name" />}
+                error={formik.touched.bi && Boolean(formik.errors.bi)}
               >
                 {BiList.map((bi) => (
                   <MenuItem value={bi.id}>{bi.BIName}</MenuItem>
                 ))}
               </Select>
+              <FormHelperText error={formik.touched.bi && Boolean(formik.errors.bi)}>
+                {formik.errors.bi && formik.touched.bi && formik.errors.bi}
+              </FormHelperText>
             </FormControl>
             <FormControl fullWidth margin="dense">
               <InputLabel id="multiple-role-label">Lead Source</InputLabel>
@@ -146,11 +151,17 @@ export default function MasterTrack() {
                 labelId="multiple-role-label"
                 {...formik.getFieldProps('leadSource')}
                 input={<OutlinedInput label="Name" />}
+                error={formik.touched.leadSource && Boolean(formik.errors.leadSource)}
               >
                 {LeadSourceList.map((ls) => (
                   <MenuItem value={ls.id}>{ls.LeadSourceName}</MenuItem>
                 ))}
               </Select>
+              <FormHelperText
+                error={formik.touched.leadSource && Boolean(formik.errors.leadSource)}
+              >
+                {formik.errors.leadSource && formik.touched.leadSource && formik.errors.leadSource}
+              </FormHelperText>
             </FormControl>
             <FormControl fullWidth margin="dense">
               <InputLabel id="multiple-role-label">Brand</InputLabel>
@@ -159,11 +170,15 @@ export default function MasterTrack() {
                 labelId="multiple-role-label"
                 {...formik.getFieldProps('brand')}
                 input={<OutlinedInput label="Name" />}
+                error={formik.touched.brand && Boolean(formik.errors.brand)}
               >
                 {BrandList.map((br) => (
                   <MenuItem value={br.id}>{br.BrandName}</MenuItem>
                 ))}
               </Select>
+              <FormHelperText error={formik.touched.brand && Boolean(formik.errors.brand)}>
+                {formik.errors.brand && formik.touched.brand && formik.errors.brand}
+              </FormHelperText>
             </FormControl>
             <TextField
               {...formik.getFieldProps('aid')}
@@ -171,6 +186,8 @@ export default function MasterTrack() {
               label="Aid"
               type="text"
               fullWidth
+              error={formik.touched.aid && Boolean(formik.errors.aid)}
+              helperText={formik.touched.aid && formik.errors.aid}
             />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
@@ -179,7 +196,11 @@ export default function MasterTrack() {
                 onChange={(value) => formik.setFieldValue('dateFtd', value)}
                 label="Date FTD"
                 renderInput={(params) => <TextField fullWidth margin="dense" {...params} />}
+                error={formik.touched.dateFtd && Boolean(formik.errors.dateFtd)}
               />
+              <FormHelperText error={formik.touched.dateFtd && Boolean(formik.errors.dateFtd)}>
+                {formik.errors.dateFtd && formik.touched.dateFtd && formik.errors.dateFtd}
+              </FormHelperText>
             </LocalizationProvider>
             <TextField
               {...formik.getFieldProps('email')}
@@ -187,6 +208,8 @@ export default function MasterTrack() {
               label="Email"
               type="email"
               fullWidth
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
             <div margin="dense">
               <Stack direction={{ sm: 'row' }} spacing={{ md: 2 }} margin="dense">
@@ -195,6 +218,8 @@ export default function MasterTrack() {
                   label="FTD Amount"
                   type="number"
                   sx={{ minWidth: 500 }}
+                  error={formik.touched.ftdAmount && Boolean(formik.errors.ftdAmount)}
+                  helperText={formik.touched.ftdAmount && formik.errors.ftdAmount}
                 />
                 <FormControl
                 // spacing={2}
@@ -210,11 +235,17 @@ export default function MasterTrack() {
                     input={<OutlinedInput label="Name" />}
                     sx={{ minWidth: 337 }}
                     margin="dense"
+                    error={formik.touched.currCode && Boolean(formik.errors.currCode)}
                   >
                     {CurrCodeList.map((curr) => (
                       <MenuItem value={curr.id}>{curr.CurrencyCode}</MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText
+                    error={formik.touched.currCode && Boolean(formik.errors.currCode)}
+                  >
+                    {formik.errors.currCode && formik.touched.currCode && formik.errors.currCode}
+                  </FormHelperText>
                 </FormControl>
               </Stack>
             </div>
@@ -224,6 +255,8 @@ export default function MasterTrack() {
               label="Sales Agent"
               type="text"
               fullWidth
+              error={formik.touched.salesAgent && Boolean(formik.errors.salesAgent)}
+              helperText={formik.touched.salesAgent && formik.errors.salesAgent}
             />
             <FormControl fullWidth margin="dense">
               <InputLabel id="multiple-role-label">Retention</InputLabel>
@@ -231,11 +264,15 @@ export default function MasterTrack() {
                 {...formik.getFieldProps('retention')}
                 labelId="multiple-role-label"
                 input={<OutlinedInput label="Name" />}
+                error={formik.touched.retention && Boolean(formik.errors.retention)}
               >
                 {RetentionList.map((rl) => (
                   <MenuItem value={rl.id}>{rl.retentionName}</MenuItem>
                 ))}
               </Select>
+              <FormHelperText error={formik.touched.retention && Boolean(formik.errors.retention)}>
+                {formik.errors.retention && formik.touched.retention && formik.errors.retention}
+              </FormHelperText>
             </FormControl>{' '}
             <br />
             <br />

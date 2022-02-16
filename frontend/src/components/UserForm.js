@@ -34,11 +34,14 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
 
   const UserSchema = Yup.object().shape({
     fullname: Yup.string().required('Required !'),
-    email: Yup.string().email().required(),
+    email: Yup.string().email('Please enter a valid email').required('Required !'),
     password: !selectedUser.id
-      ? Yup.string().matches(
-          /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
-        )
+      ? Yup.string()
+          .matches(
+            /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+            'Password must have at least 8 characters that include at least 1 lowercase character, 1 uppercase character, 1 number and a special charcter in(!@#$%^&*)'
+          )
+          .required('Required !')
       : Yup.string(),
     roles: Yup.array().of(Yup.string()),
     teams: Yup.array().of(Yup.number())
@@ -70,6 +73,8 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
             type="text"
             fullWidth
             {...formik.getFieldProps('fullname')}
+            error={formik.touched.fullname && Boolean(formik.errors.fullname)}
+            helperText={formik.touched.fullname && formik.errors.fullname}
           />
           <TextField
             margin="dense"
@@ -77,6 +82,8 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
             type="email"
             fullWidth
             {...formik.getFieldProps('email')}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           {!selectedUser.id ? (
             <TextField
@@ -85,6 +92,8 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
               type="password"
               fullWidth
               {...formik.getFieldProps('password')}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
           ) : null}
           <FormControl fullWidth margin="dense">
