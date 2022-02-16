@@ -20,6 +20,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { useNavigate } from 'react-router-dom';
+import Divider from '@material-ui/core/Divider';
 
 // components
 import Page from '../components/Page';
@@ -179,25 +180,38 @@ export default function MasterTrack() {
               type="email"
               fullWidth
             />
-            <TextField
-              {...formik.getFieldProps('ftdAmount')}
-              margin="dense"
-              label="FTD Amount"
-              type="number"
-              fullWidth
-            />
-            <FormControl fullWidth margin="dense">
-              <InputLabel id="multiple-role-label">Currency Code</InputLabel>
-              <Select
-                {...formik.getFieldProps('currCode')}
-                labelId="multiple-role-label"
-                input={<OutlinedInput label="Name" />}
-              >
-                {CurrCodeList.map((curr) => (
-                  <MenuItem value={curr.id}>{curr.CurrencyCode}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <div margin="dense">
+              <Stack direction={{ sm: 'row' }} spacing={{ md: 2 }} margin="dense">
+                <TextField
+                  {...formik.getFieldProps('ftdAmount')}
+                  label="FTD Amount"
+                  type="number"
+                  sx={{ minWidth: 500 }}
+                  // margin="dense"
+                  // spacing={2}
+                />
+                <FormControl
+                // spacing={2}
+                // margin="dense"
+                // direction="row"
+                // divider={<Divider orientation="vertical" flexItem />}
+                // justifyContent="flex-end"
+                >
+                  <InputLabel id="multiple-role-label">Currency Code</InputLabel>
+                  <Select
+                    {...formik.getFieldProps('currCode')}
+                    labelId="multiple-role-label"
+                    input={<OutlinedInput label="Name" />}
+                    sx={{ minWidth: 337 }}
+                    margin="dense"
+                  >
+                    {CurrCodeList.map((curr) => (
+                      <MenuItem value={curr.id}>{curr.CurrencyCode}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+            </div>
             <TextField
               {...formik.getFieldProps('salesAgent')}
               margin="dense"

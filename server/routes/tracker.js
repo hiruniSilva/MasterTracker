@@ -219,5 +219,14 @@ router.get("/report2", async (req, res) => {
 	}
 });
 
+router.get("/getRetentionList", async(req,res)=>{
+	try {
+		const brands = await models.Brand.findAll();
+		res.status(201).json(brands);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+})
+
 
 export default router;
