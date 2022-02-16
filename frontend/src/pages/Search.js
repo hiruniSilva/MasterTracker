@@ -52,6 +52,7 @@ const top100Films = [
 
 export default function Search() {
   const [USERLIST, setUserList] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     axios
@@ -72,22 +73,15 @@ export default function Search() {
             Search
           </Typography>
         </Stack>
-        <Autocomplete
-          freeSolo
-          id="free-solo-2-demo"
-          disableClearable
-          options={top100Films.map((option) => option.title)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Aid/ Email"
-              InputProps={{
-                ...params.InputProps,
-                type: 'search'
-              }}
-            />
-          )}
-        />{' '}
+        <TextField
+          autoFocus
+          margin="dense"
+          label="Aid/Email"
+          type="text"
+          fullWidth
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+        />
         <br />
         <Card>
           <Scrollbar>
@@ -103,7 +97,13 @@ export default function Search() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {USERLIST.map((row) => {
+                  {(searchText
+                    ? USERLIST.filter(
+                        (item) =>
+                          item.Email.startsWith(searchText) || item.Aid.startsWith(searchText)
+                      )
+                    : USERLIST
+                  ).map((row) => {
                     const {
                       id,
                       BIvalue,
