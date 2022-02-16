@@ -32,6 +32,7 @@ export default function MasterTrack() {
   const [LeadSourceList, setLeadSource] = useState([]);
   const [BrandList, setBrandList] = useState([]);
   const [CurrCodeList, setCurrCodeList] = useState([]);
+  const [RetentionList, setRetentionList] = useState([]);
 
   useEffect(() => {
     axios
@@ -62,6 +63,14 @@ export default function MasterTrack() {
       .get('/api/tracker/getCurrencyCode')
       .then((res) => {
         setCurrCodeList(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+    axios
+      .get('/api/tracker/getRetentionNames')
+      .then((res) => {
+        setRetentionList(res.data);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
@@ -223,8 +232,9 @@ export default function MasterTrack() {
                 labelId="multiple-role-label"
                 input={<OutlinedInput label="Name" />}
               >
-                <MenuItem value="Premium Support">Premium Support</MenuItem>
-                <MenuItem value="Own">Own</MenuItem>
+                {RetentionList.map((rl) => (
+                  <MenuItem value={rl.id}>{rl.retentionName}</MenuItem>
+                ))}
               </Select>
             </FormControl>{' '}
             <br />

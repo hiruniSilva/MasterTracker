@@ -15,9 +15,9 @@ app.use(cookieParser());
 
 app.use('/api', require('./routes/index').default);
 
-app.use(express.static(path.resolve(__dirname, '../frontend/dist')));
+app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
 });
 
 app.listen(PORT, () => {

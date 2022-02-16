@@ -72,6 +72,15 @@ router.get("/getDatabaseNames", async (req, res) => {
 	}
 });
 
+router.get("/getRetentionNames", async (req, res) => {
+	try {
+		const retention = await models.Retention.findAll();
+		res.status(201).json(retention);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 router.post("/addMasterTrack", async (req, res) => {
 	try {
 		const { bi, leadSource, brand, aid, dateFtd, email, ftdAmount, currCode, salesAgent, retention } = req.body;
@@ -240,6 +249,8 @@ router.get("/getRetentionList", async(req,res)=>{
 		res.status(400).send(error.message);
 	}
 })
+
+
 
 
 export default router;

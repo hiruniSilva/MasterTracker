@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       MasterTrack.belongsTo(models.Brand,{ as: 'BrandValue',foreignKey:"Brand"})
       MasterTrack.belongsTo(models.Currency,{ as: 'CurrencyValue',foreignKey:"CurrencyCode"})
       MasterTrack.belongsTo(models.Database,{ as: 'DatabaseValue',foreignKey:"Database"})
+      MasterTrack.belongsTo(models.Retention,{ as: 'RetentionValue',foreignKey:"Retention"})
     }
   }
   MasterTrack.init({
@@ -42,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     FTDAmount: DataTypes.DECIMAL,
     CurrencyCode: DataTypes.INTEGER,
     SalesAgent: DataTypes.STRING,
-    Retention: DataTypes.STRING,
+    Retention: DataTypes.INTEGER,
     Database: DataTypes.STRING
   }, {
     sequelize,

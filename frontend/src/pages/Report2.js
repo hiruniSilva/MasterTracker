@@ -5,6 +5,7 @@ import { Form, useFormik } from 'formik';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import dayjs from 'dayjs';
+import NumberFormat from 'react-number-format';
 
 // material
 import {
@@ -155,7 +156,14 @@ export default function Report2() {
                         <TableCell align="left">{NoFTD}</TableCell>
                         <TableCell align="left">
                           {FTDAmount.map((i) => (
-                            <div>{`${i.CurrencyCode} ${i.Amount}`}</div>
+                            <div>
+                              <NumberFormat
+                                displayType="text"
+                                value={i.Amount}
+                                thousandSeparator
+                                prefix={`${i.CurrencyCode} `}
+                              />
+                            </div>
                           ))}
                         </TableCell>
                       </TableRow>
