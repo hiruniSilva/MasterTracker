@@ -69,6 +69,28 @@ export default function Report1() {
       });
   }, [value1, value2]);
 
+  const report = team === 'All' ? report1List : report1List.filter((i) => i.BIName === team);
+  const getCurrencyTotal = () => {
+    const data = {};
+    report
+      .map((i) => i.FTDAmount)
+      .flat()
+      .forEach((i) => {
+        data[i.CurrencyCode] = (data[i.CurrencyCode] || 0) + i.Amount;
+      });
+    return data;
+  };
+  const getSourceTotal = () => {
+    const data = {};
+    report
+      .map((i) => i.Sources)
+      .flat()
+      .forEach((i) => {
+        data[i.LeadSourceName] = (data[i.LeadSourceName] || 0) + i.Count;
+      });
+    return data;
+  };
+
   return (
     <Page title="Report 1 | Minimal-UI">
       <Container>
@@ -147,10 +169,7 @@ export default function Report1() {
                 </TableHead>
 
                 <TableBody>
-                  {(team === 'All'
-                    ? report1List
-                    : report1List.filter((i) => i.BIName === team)
-                  ).map((row) => {
+                  {report.map((row) => {
                     const { id, BIName, NoFTD, FTDAmount, Sources } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>
@@ -169,6 +188,22 @@ export default function Report1() {
                       </TableRow>
                     );
                   })}
+                  {report.length > 0 && (
+                    <TableRow hover tabIndex={-1}>
+                      <TableCell align="left">TOTAL</TableCell>
+                      <TableCell align="left">{report.reduce((a, b) => a + b.NoFTD, 0)}</TableCell>
+                      <TableCell align="left">
+                        {Object.entries(getCurrencyTotal()).map(([key, value]) => (
+                          <div>{`${key} ${value}`}</div>
+                        ))}
+                      </TableCell>
+                      <TableCell align="left">
+                        {Object.entries(getSourceTotal()).map(([key, value]) => (
+                          <div>{`${key} ${value}`}</div>
+                        ))}
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
