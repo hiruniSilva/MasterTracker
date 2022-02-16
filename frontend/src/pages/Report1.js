@@ -73,48 +73,51 @@ export default function Report1() {
           </Typography>
         </Stack>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="From"
-            value={value1}
-            onChange={(newValue1) => {
-              setValue1(newValue1);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+        <Stack direction="row">
+          <Stack direction="row" spacing={2}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} sx={{ minWidth: 800 }}>
+              <DatePicker
+                label="From"
+                value={value1}
+                onChange={(newValue1) => {
+                  setValue1(newValue1);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="To"
-            value={value2}
-            onChange={(newValue2) => {
-              setValue2(newValue2);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns} sx={{ minWidth: 800 }}>
+              <DatePicker
+                label="To"
+                value={value2}
+                onChange={(newValue2) => {
+                  setValue2(newValue2);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <FormControl>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Team Name</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={team}
-                label="Team Name"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>test1</MenuItem>
-                <MenuItem value={20}>test2</MenuItem>
-                <MenuItem value={30}>Click all to select - test3</MenuItem>
-              </Select>
+            <FormControl>
+              <Box sx={{ minWidth: 250 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Team Name</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={team}
+                    label="Team Name"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={10}>test1</MenuItem>
+                    <MenuItem value={20}>test2</MenuItem>
+                    <MenuItem value={30}>Click all to select - test3</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </FormControl>
-          </Box>
-        </FormControl>
-        <Button variant="contained">View Report</Button>
-        <br />
+            <Button variant="contained">View Report</Button>
+          </Stack>
+        </Stack>
         <br />
         <Card>
           <Scrollbar>
