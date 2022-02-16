@@ -53,6 +53,17 @@ export default function Report1() {
     setTeam(event.target.value);
   };
 
+  useEffect(() => {
+    axios
+      .get('/api/tracker/report1')
+      .then((res) => {
+        setreport1List(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  }, []);
+
   return (
     <Page title="Report 1 | Minimal-UI">
       <Container>
@@ -62,48 +73,51 @@ export default function Report1() {
           </Typography>
         </Stack>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="From"
-            value={value1}
-            onChange={(newValue1) => {
-              setValue1(newValue1);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+        <Stack direction="row">
+          <Stack direction="row" spacing={2}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} sx={{ minWidth: 800 }}>
+              <DatePicker
+                label="From"
+                value={value1}
+                onChange={(newValue1) => {
+                  setValue1(newValue1);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="To"
-            value={value2}
-            onChange={(newValue2) => {
-              setValue2(newValue2);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns} sx={{ minWidth: 800 }}>
+              <DatePicker
+                label="To"
+                value={value2}
+                onChange={(newValue2) => {
+                  setValue2(newValue2);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <FormControl>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Team Name</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={team}
-                label="Team Name"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>test1</MenuItem>
-                <MenuItem value={20}>test2</MenuItem>
-                <MenuItem value={30}>Click all to select - test3</MenuItem>
-              </Select>
+            <FormControl>
+              <Box sx={{ minWidth: 250 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Team Name</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={team}
+                    label="Team Name"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={10}>test1</MenuItem>
+                    <MenuItem value={20}>test2</MenuItem>
+                    <MenuItem value={30}>Click all to select - test3</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </FormControl>
-          </Box>
-        </FormControl>
-        <Button variant="contained">View Report</Button>
-        <br />
+            <Button variant="contained">View Report</Button>
+          </Stack>
+        </Stack>
         <br />
         <Card>
           <Scrollbar>
@@ -120,37 +134,25 @@ export default function Report1() {
                 </TableHead>
 
                 <TableBody>
-                  <TableRow>
-                    <TableCell>BI_1</TableCell>
-                    <TableCell>12</TableCell>
-                    <TableCell>USD 1200</TableCell>
-                    <TableCell>
-                      <TableRow>Investing 05</TableRow>
-                      <TableRow>Investing 07</TableRow>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>BI_2</TableCell>
-                    <TableCell>10</TableCell>
-                    <TableCell>USD 15000</TableCell>
-                    <TableCell>
-                      <TableRow>Facebook 02</TableRow>
-                      <TableRow>Investing 05</TableRow>
-                      <TableRow>VA First 01</TableRow>
-                      <TableRow>VA Second 01</TableRow>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Total</TableCell>
-                    <TableCell>22</TableCell>
-                    <TableCell>USD 16200</TableCell>
-                    <TableCell>
-                      <TableRow>Investing 10</TableRow>
-                      <TableRow>Face book 02</TableRow>
-                      <TableRow>VA First 08</TableRow>
-                      <TableRow>VA Second 01</TableRow>
-                    </TableCell>
-                  </TableRow>
+                  {report1List.map((row) => {
+                    const { id, BIName, NoFTD, FTDAmount, Sources } = row;
+                    return (
+                      <TableRow hover key={id} tabIndex={-1}>
+                        <TableCell align="left">{BIName}</TableCell>
+                        <TableCell align="left">{NoFTD}</TableCell>
+                        <TableCell align="left">
+                          {FTDAmount.map((i) => (
+                            <div>{`${i.CurrencyCode} ${i.Amount}`}</div>
+                          ))}
+                        </TableCell>
+                        <TableCell align="left">
+                          {Sources.map((i) => (
+                            <div>{`${i.LeadSourceName} ${i.Count}`}</div>
+                          ))}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -111,7 +111,7 @@ export default function MasterTrack() {
 
   return (
     <Page title="Master Tracker | Minimal-UI">
-      <Container>
+      <Container maxWidth="md">
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

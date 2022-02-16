@@ -42,7 +42,7 @@ const TABLE_HEAD = [
 ];
 
 export default function Report2() {
-  const [report1List, setreport1List] = useState([]);
+  const [report2List, setreport2List] = useState([]);
 
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
@@ -51,6 +51,17 @@ export default function Report2() {
   const handleChange = (event) => {
     setdb(event.target.value);
   };
+
+  useEffect(() => {
+    axios
+      .get('/api/tracker/report2')
+      .then((res) => {
+        setreport2List(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  }, []);
 
   return (
     <Page title="Report 2 | Minimal-UI">
@@ -61,48 +72,51 @@ export default function Report2() {
           </Typography>
         </Stack>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="From"
-            value={value1}
-            onChange={(newValue1) => {
-              setValue1(newValue1);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+        <Stack direction="row">
+          <Stack direction="row" spacing={2}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="From"
+                value={value1}
+                onChange={(newValue1) => {
+                  setValue1(newValue1);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="To"
-            value={value2}
-            onChange={(newValue2) => {
-              setValue2(newValue2);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="To"
+                value={value2}
+                onChange={(newValue2) => {
+                  setValue2(newValue2);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-        <FormControl>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Database</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={db}
-                label="Database"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>test1</MenuItem>
-                <MenuItem value={20}>test2</MenuItem>
-                <MenuItem value={30}>Click all to select - test3</MenuItem>
-              </Select>
+            <FormControl>
+              <Box sx={{ minWidth: 250 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Database</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={db}
+                    label="Database"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={10}>test1</MenuItem>
+                    <MenuItem value={20}>test2</MenuItem>
+                    <MenuItem value={30}>Click all to select - test3</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </FormControl>
-          </Box>
-        </FormControl>
-        <Button variant="contained">View Report</Button>
-        <br />
+            <Button variant="contained">View Report</Button>
+          </Stack>
+        </Stack>
         <br />
         <Card>
           <Scrollbar>
@@ -119,16 +133,20 @@ export default function Report2() {
                 </TableHead>
 
                 <TableBody>
-                  <TableRow>
-                    <TableCell>DB_1</TableCell>
-                    <TableCell>50</TableCell>
-                    <TableCell>USD 7500</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>DB_2</TableCell>
-                    <TableCell>10</TableCell>
-                    <TableCell>USD 15000</TableCell>
-                  </TableRow>
+                  {report2List.map((row) => {
+                    const { id, DatabaseName, NoFTD, FTDAmount } = row;
+                    return (
+                      <TableRow hover key={id} tabIndex={-1}>
+                        <TableCell align="left">{DatabaseName}</TableCell>
+                        <TableCell align="left">{NoFTD}</TableCell>
+                        <TableCell align="left">
+                          {FTDAmount.map((i) => (
+                            <div>{`${i.CurrencyCode} ${i.Amount}`}</div>
+                          ))}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
