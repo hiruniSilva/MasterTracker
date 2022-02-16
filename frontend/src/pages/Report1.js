@@ -53,6 +53,17 @@ export default function Report1() {
     setTeam(event.target.value);
   };
 
+  useEffect(() => {
+    axios
+      .get('/api/tracker/report1')
+      .then((res) => {
+        setreport1List(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
+  }, []);
+
   return (
     <Page title="Report 1 | Minimal-UI">
       <Container>
@@ -120,37 +131,25 @@ export default function Report1() {
                 </TableHead>
 
                 <TableBody>
-                  <TableRow>
-                    <TableCell>BI_1</TableCell>
-                    <TableCell>12</TableCell>
-                    <TableCell>USD 1200</TableCell>
-                    <TableCell>
-                      <TableRow>Investing 05</TableRow>
-                      <TableRow>Investing 07</TableRow>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>BI_2</TableCell>
-                    <TableCell>10</TableCell>
-                    <TableCell>USD 15000</TableCell>
-                    <TableCell>
-                      <TableRow>Facebook 02</TableRow>
-                      <TableRow>Investing 05</TableRow>
-                      <TableRow>VA First 01</TableRow>
-                      <TableRow>VA Second 01</TableRow>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Total</TableCell>
-                    <TableCell>22</TableCell>
-                    <TableCell>USD 16200</TableCell>
-                    <TableCell>
-                      <TableRow>Investing 10</TableRow>
-                      <TableRow>Face book 02</TableRow>
-                      <TableRow>VA First 08</TableRow>
-                      <TableRow>VA Second 01</TableRow>
-                    </TableCell>
-                  </TableRow>
+                  {report1List.map((row) => {
+                    const { id, BIName, NoFTD, FTDAmount, Sources } = row;
+                    return (
+                      <TableRow hover key={id} tabIndex={-1}>
+                        <TableCell align="left">{BIName}</TableCell>
+                        <TableCell align="left">{NoFTD}</TableCell>
+                        <TableCell align="left">
+                          {FTDAmount.map((i) => (
+                            <div>{`${i.CurrencyCode} ${i.Amount}`}</div>
+                          ))}
+                        </TableCell>
+                        <TableCell align="left">
+                          {Sources.map((i) => (
+                            <div>{`${i.LeadSourceName} ${i.Count}`}</div>
+                          ))}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
