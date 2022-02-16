@@ -93,7 +93,7 @@ export default function Database() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {USERLIST.map((row) => {
+                  {USERLIST.map((row, index) => {
                     const {
                       id,
                       BIvalue,
@@ -104,7 +104,7 @@ export default function Database() {
                       FTDAmount,
                       CurrencyValue,
                       Retention,
-                      DatabaseValue
+                      Database: db
                     } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>
@@ -116,8 +116,13 @@ export default function Database() {
                         <TableCell align="left">
                           <FormControl fullWidth>
                             <Select
-                              value={DatabaseValue?.id}
-                              onChange={(event) => handleDatabaseChange(id, event.target.value)}
+                              value={db}
+                              onChange={(event) => {
+                                handleDatabaseChange(id, event.target.value);
+                                const newTrackers = [...USERLIST];
+                                newTrackers[index].Database = event.target.value;
+                                setUserList(newTrackers);
+                              }}
                             >
                               {databases.map((database) => (
                                 <MenuItem value={database.id}>{database.dbName}</MenuItem>
