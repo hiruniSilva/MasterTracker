@@ -2,6 +2,7 @@ import express from "express";
 import models from "../models";
 import { validateToken } from "../middlewares/auth";
 import _, { keys } from "lodash";
+import { Op } from "sequelize";
 
 const router = express.Router();
 
@@ -165,8 +166,15 @@ router.get("/getUserView", validateToken, async (req, res) => {
 
 router.get("/report1", async (req, res) => {
 	try {
+		const startDate = new Date(req.query.startDate)
+		const endDate = new Date(req.query.endDate)
 		const masterTracks = await models.MasterTrack.findAll({
 			include: [{ all: true }],
+			where: {
+				DateFTD: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
 		});
 		const getFTDAmounts = (data)=> {
 			const grouped = _.groupBy(data, i=>i.CurrencyCode)
@@ -199,6 +207,11 @@ router.get("/report2", async (req, res) => {
 	try {
 		const masterTracks = await models.MasterTrack.findAll({
 			include: [{ all: true }],
+			where: {
+				DateFTD: {
+					[Op.between]: [new Date(req.query.startDate), new Date(req.query.endDate)],
+				},
+			},
 		});
 		const getFTDAmounts = (data)=> {
 			const grouped = _.groupBy(data, i=>i.CurrencyCode)

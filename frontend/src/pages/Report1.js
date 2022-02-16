@@ -47,22 +47,27 @@ export default function Report1() {
 
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
-  const [team, setTeam] = React.useState('');
+  const [team, setTeam] = React.useState('All');
 
   const handleChange = (event) => {
     setTeam(event.target.value);
   };
 
-  useEffect(() => {
+  const loadData = React.useCallback(() => {
+    if (!value1 || !value2) return;
     axios
-      .get('/api/tracker/report1')
+      .get(
+        `/api/tracker/report1?startDate=${dayjs(value1).format('YYYY-MM-DD')}&endDate=${dayjs(
+          value2
+        ).format('YYYY-MM-DD')}`
+      )
       .then((res) => {
         setreport1List(res.data);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
       });
-  }, []);
+  }, [value1, value2]);
 
   return (
     <Page title="Report 1 | Minimal-UI">
@@ -108,14 +113,22 @@ export default function Report1() {
                     label="Team Name"
                     onChange={handleChange}
                   >
-                    <MenuItem value={10}>test1</MenuItem>
-                    <MenuItem value={20}>test2</MenuItem>
-                    <MenuItem value={30}>Click all to select - test3</MenuItem>
+                    <MenuItem value="All">All</MenuItem>
+                    {report1List.map((i) => (
+                      <MenuItem value={i.BIName}>{i.BIName}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
             </FormControl>
-            <Button variant="contained">View Report</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                loadData();
+              }}
+            >
+              View Report
+            </Button>
           </Stack>
         </Stack>
         <br />
@@ -134,7 +147,10 @@ export default function Report1() {
                 </TableHead>
 
                 <TableBody>
-                  {report1List.map((row) => {
+                  {(team === 'All'
+                    ? report1List
+                    : report1List.filter((i) => i.BIName === team)
+                  ).map((row) => {
                     const { id, BIName, NoFTD, FTDAmount, Sources } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>

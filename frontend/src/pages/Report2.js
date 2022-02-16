@@ -46,22 +46,27 @@ export default function Report2() {
 
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
-  const [db, setdb] = React.useState('');
+  const [db, setdb] = React.useState('All');
 
   const handleChange = (event) => {
     setdb(event.target.value);
   };
 
-  useEffect(() => {
+  const loadData = React.useCallback(() => {
+    if (!value1 || !value2) return;
     axios
-      .get('/api/tracker/report2')
+      .get(
+        `/api/tracker/report2?startDate=${dayjs(value1).format('YYYY-MM-DD')}&endDate=${dayjs(
+          value2
+        ).format('YYYY-MM-DD')}`
+      )
       .then((res) => {
         setreport2List(res.data);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
       });
-  }, []);
+  }, [value1, value2]);
 
   return (
     <Page title="Report 2 | Minimal-UI">
@@ -84,7 +89,6 @@ export default function Report2() {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="To"
@@ -95,7 +99,6 @@ export default function Report2() {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-
             <FormControl>
               <Box sx={{ minWidth: 250 }}>
                 <FormControl fullWidth>
@@ -107,14 +110,22 @@ export default function Report2() {
                     label="Database"
                     onChange={handleChange}
                   >
-                    <MenuItem value={10}>test1</MenuItem>
-                    <MenuItem value={20}>test2</MenuItem>
-                    <MenuItem value={30}>Click all to select - test3</MenuItem>
+                    <MenuItem value="All">All</MenuItem>
+                    {report2List.map((i) => (
+                      <MenuItem value={i.DatabaseName}>{i.DatabaseName}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
             </FormControl>
-            <Button variant="contained">View Report</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                loadData();
+              }}
+            >
+              View Report
+            </Button>{' '}
           </Stack>
         </Stack>
         <br />
@@ -133,7 +144,10 @@ export default function Report2() {
                 </TableHead>
 
                 <TableBody>
-                  {report2List.map((row) => {
+                  {(db === 'All'
+                    ? report2List
+                    : report2List.filter((i) => i.DatabaseName === db)
+                  ).map((row) => {
                     const { id, DatabaseName, NoFTD, FTDAmount } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>
