@@ -45,7 +45,7 @@ export default function LoginForm() {
         .then((res) => {
           setCurrentUser(res.data.user);
           toast.success(`Welcome ${res.data.user.fullname}`);
-          navigate('/dashboard/user');
+          navigate('/dashboard/search');
         })
         .catch((err) => {
           toast.error('Incorrect Email or Password');

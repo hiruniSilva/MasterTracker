@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import peopleFill from '@iconify/icons-eva/people-fill';
 import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 import roles from '../../services/roles.config';
+// import FaDatabase from '@iconify/icons-eva/FaDatabase';
 
 // ----------------------------------------------------------------------
 
@@ -11,43 +12,43 @@ const sidebarConfig = [
   {
     title: 'Search',
     path: '/dashboard/search',
-    icon: getIcon(peopleFill),
+    icon: getIcon('akar-icons:search'),
     access: roles.Search
   },
   {
     title: 'user',
     path: '/dashboard/user',
-    icon: getIcon(peopleFill),
+    icon: getIcon('gridicons:user-add'),
     access: roles.Add_New_User
   },
   {
     title: 'Master Tracker',
     path: '/dashboard/mastertrack',
-    icon: getIcon(alertTriangleFill),
+    icon: getIcon('carbon:add-filled'),
     access: roles.Master_Tracker
   },
   {
     title: 'Database',
     path: '/dashboard/database',
-    icon: getIcon(alertTriangleFill),
+    icon: getIcon('eos-icons:database'),
     access: roles.Database
   },
   {
     title: 'View',
     path: '/dashboard/view',
-    icon: getIcon(alertTriangleFill),
+    icon: getIcon('carbon:data-view-alt'),
     access: roles.View
   },
   {
     title: 'Report 1',
     path: '/dashboard/report1',
-    icon: getIcon(alertTriangleFill),
+    icon: getIcon('iconoir:reports'),
     access: roles.Report_1
   },
   {
     title: 'Report 2',
     path: '/dashboard/report2',
-    icon: getIcon(alertTriangleFill),
+    icon: getIcon('iconoir:reports'),
     access: roles.Report_2
   }
 ];
