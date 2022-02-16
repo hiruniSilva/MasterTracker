@@ -1,6 +1,5 @@
 import { Icon } from '@iconify/react';
 import peopleFill from '@iconify/icons-eva/people-fill';
-import lockFill from '@iconify/icons-eva/lock-fill';
 import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 import roles from '../../services/roles.config';
 

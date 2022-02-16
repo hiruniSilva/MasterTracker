@@ -10,6 +10,8 @@ import MasterTrack from './pages/MasterTrack';
 import Search from './pages/Search';
 import Database from './pages/Database';
 import View from './pages/View';
+import Report1 from './pages/Report1';
+import Report2 from './pages/Report2';
 
 // ----------------------------------------------------------------------
 
@@ -25,8 +27,8 @@ export default function Router() {
         { path: 'search', element: <Search /> },
         { path: 'database', element: <Database /> },
         { path: 'view', element: <View /> },
-        { path: 'report1', element: <Database /> },
-        { path: 'report2', element: <Database /> }
+        { path: 'report1', element: <Report1 /> },
+        { path: 'report2', element: <Report2 /> }
       ]
     },
     {
