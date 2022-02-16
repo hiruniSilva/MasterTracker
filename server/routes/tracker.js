@@ -195,4 +195,29 @@ router.get("/report1", async (req, res) => {
 	}
 });
 
+router.get("/report2", async (req, res) => {
+	try {
+		const masterTracks = await models.MasterTrack.findAll({
+			include: [{ all: true }],
+		});
+		const getFTDAmounts = (data)=> {
+			const grouped = _.groupBy(data, i=>i.CurrencyCode)
+			return Object.keys(grouped).map(i=>({
+				CurrencyCode: grouped[i][0].CurrencyValue.CurrencyCode,
+				Amount: grouped[i].reduce((partialSum, a) => partialSum + (+a.FTDAmount), 0)
+			}))
+		}
+		const groupedTracks = _.groupBy(masterTracks, (item)=>item.Database)
+		const groupedTracksValues = Object.keys(groupedTracks).filter(i=>groupedTracks[i][0].DatabaseValue).map(key=>({
+			DatabaseName: groupedTracks[key][0].DatabaseValue.dbName,
+			NoFTD: groupedTracks[key].length,
+			FTDAmount: getFTDAmounts(groupedTracks[key]),
+		}))
+		res.status(200).json(groupedTracksValues);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+
 export default router;
