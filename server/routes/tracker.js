@@ -1,6 +1,7 @@
 import express from "express";
 import models from "../models";
 import { validateToken } from "../middlewares/auth";
+import _, { keys } from "lodash";
 
 const router = express.Router();
 
@@ -157,6 +158,38 @@ router.get("/getUserView", validateToken, async (req, res) => {
 		});
 
 		res.status(201).json(masterTracks);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/report1", async (req, res) => {
+	try {
+		const masterTracks = await models.MasterTrack.findAll({
+			include: [{ all: true }],
+		});
+		const getFTDAmounts = (data)=> {
+			const grouped = _.groupBy(data, i=>i.CurrencyCode)
+			return Object.keys(grouped).map(i=>({
+				CurrencyCode: grouped[i][0].CurrencyValue.CurrencyCode,
+				Amount: grouped[i].reduce((partialSum, a) => partialSum + (+a.FTDAmount), 0)
+			}))
+		}
+		const getSources = (data) => {
+			const grouped = _.groupBy(data, i=>i.LeadSource)
+			return Object.keys(grouped).map(i=>({
+				LeadSourceName: grouped[i][0].LeadSourceValue.LeadSourceName,
+				Count: grouped[i].length
+			}))
+		}
+		const groupedTracks = _.groupBy(masterTracks, (item)=>item.BI)
+		const groupedTracksValues = Object.keys(groupedTracks).map(key=>({
+			BIName: groupedTracks[key][0].BIvalue.BIName,
+			NoFTD: groupedTracks[key].length,
+			FTDAmount: getFTDAmounts(groupedTracks[key]),
+			Sources: getSources(groupedTracks[key])
+		}))
+		res.status(200).json(groupedTracksValues);
 	} catch (error) {
 		res.status(400).send(error.message);
 	}
