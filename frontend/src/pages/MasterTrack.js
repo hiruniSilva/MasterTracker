@@ -20,7 +20,6 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { useNavigate } from 'react-router-dom';
-import Divider from '@material-ui/core/Divider';
 
 // components
 import Page from '../components/Page';
@@ -187,8 +186,6 @@ export default function MasterTrack() {
                   label="FTD Amount"
                   type="number"
                   sx={{ minWidth: 500 }}
-                  // margin="dense"
-                  // spacing={2}
                 />
                 <FormControl
                 // spacing={2}
@@ -226,8 +223,8 @@ export default function MasterTrack() {
                 labelId="multiple-role-label"
                 input={<OutlinedInput label="Name" />}
               >
-                <MenuItem value="pmSup">Premium Support</MenuItem>
-                <MenuItem value="own">Own</MenuItem>
+                <MenuItem value="Premium Support">Premium Support</MenuItem>
+                <MenuItem value="Own">Own</MenuItem>
               </Select>
             </FormControl>{' '}
             <br />
