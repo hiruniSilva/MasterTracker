@@ -186,8 +186,6 @@ export default function MasterTrack() {
                   label="FTD Amount"
                   type="number"
                   sx={{ minWidth: 500 }}
-                  // margin="dense"
-                  // spacing={2}
                 />
                 <FormControl
                 // spacing={2}
@@ -225,8 +223,8 @@ export default function MasterTrack() {
                 labelId="multiple-role-label"
                 input={<OutlinedInput label="Name" />}
               >
-                <MenuItem value="pmSup">Premium Support</MenuItem>
-                <MenuItem value="own">Own</MenuItem>
+                <MenuItem value="Premium Support">Premium Support</MenuItem>
+                <MenuItem value="Own">Own</MenuItem>
               </Select>
             </FormControl>{' '}
             <br />

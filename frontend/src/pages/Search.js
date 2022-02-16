@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-
+import NumberFormat from 'react-number-format';
 // material
 import {
   Card,
@@ -125,8 +125,14 @@ export default function Search() {
                         <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
                         <TableCell align="left">{DatabaseValue?.dbName}</TableCell>
                         <TableCell align="left">
-                          {CurrencyValue?.CurrencyCode} {FTDAmount}
+                          <NumberFormat
+                            displayType="text"
+                            value={FTDAmount}
+                            thousandSeparator
+                            prefix={`${CurrencyValue?.CurrencyCode} `}
+                          />
                         </TableCell>
+
                         <TableCell align="left">{Retention}</TableCell>
                       </TableRow>
                     );

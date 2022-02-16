@@ -33,7 +33,7 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
   }, []);
 
   const UserSchema = Yup.object().shape({
-    fullname: Yup.string().required(),
+    fullname: Yup.string().required('Required !'),
     email: Yup.string().email().required(),
     password: !selectedUser.id
       ? Yup.string().matches(
