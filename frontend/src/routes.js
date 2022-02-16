@@ -22,9 +22,10 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/user" replace /> },
+        { path: 'search', element: <Search /> },
         { path: 'user', element: <User /> },
         { path: 'mastertrack', element: <MasterTrack /> },
-        { path: 'search', element: <Search /> },
+        // { path: 'search', element: <Search /> },
         { path: 'database', element: <Database /> },
         { path: 'view', element: <View /> },
         { path: 'report1', element: <Report1 /> },

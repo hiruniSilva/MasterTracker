@@ -2,6 +2,8 @@ import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 // material
 import {
@@ -34,6 +36,20 @@ const TABLE_HEAD = [
   { id: 'retention', label: 'Retention', alignRight: false }
 ];
 
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+  { title: 'The Godfather: Part II', year: 1974 },
+  { title: 'The Dark Knight', year: 2008 },
+  { title: '12 Angry Men', year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: 'Pulp Fiction', year: 1994 },
+  {
+    title: 'The Lord of the Rings: The Return of the King',
+    year: 2003
+  }
+];
+
 export default function Search() {
   const [USERLIST, setUserList] = useState([]);
 
@@ -56,7 +72,23 @@ export default function Search() {
             Search
           </Typography>
         </Stack>
-
+        <Autocomplete
+          freeSolo
+          id="free-solo-2-demo"
+          disableClearable
+          options={top100Films.map((option) => option.title)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Aid/ Email"
+              InputProps={{
+                ...params.InputProps,
+                type: 'search'
+              }}
+            />
+          )}
+        />{' '}
+        <br />
         <Card>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
