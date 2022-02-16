@@ -196,7 +196,6 @@ export default function MasterTrack() {
                 onChange={(value) => formik.setFieldValue('dateFtd', value)}
                 label="Date FTD"
                 renderInput={(params) => <TextField fullWidth margin="dense" {...params} />}
-                error={formik.touched.dateFtd && Boolean(formik.errors.dateFtd)}
               />
               <FormHelperText error={formik.touched.dateFtd && Boolean(formik.errors.dateFtd)}>
                 {formik.errors.dateFtd && formik.touched.dateFtd && formik.errors.dateFtd}
