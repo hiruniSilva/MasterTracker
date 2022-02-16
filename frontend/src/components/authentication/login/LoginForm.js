@@ -20,6 +20,7 @@ import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import axios from '../../../services/api.service';
 import { currentUserState } from '../../../services/auth.service';
+import sidebarConfig from '../../../layouts/dashboard/SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -44,8 +45,12 @@ export default function LoginForm() {
         .post('/api/auth/login', data)
         .then((res) => {
           setCurrentUser(res.data.user);
+          console.log(res.data.user);
           toast.success(`Welcome ${res.data.user.fullname}`);
-          navigate('/dashboard/search');
+          if (res.data.user.roles.length > 0) {
+            const path = sidebarConfig.find((item) => item.access === res.data.user.roles[0]);
+            navigate(path.path);
+          }
         })
         .catch((err) => {
           toast.error('Incorrect Email or Password');
