@@ -1,4 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -12,23 +14,31 @@ import Database from './pages/Database';
 import View from './pages/View';
 import Report1 from './pages/Report1';
 import Report2 from './pages/Report2';
+import roles from './services/roles.config';
+import { currentUserState } from './services/auth.service';
 
 // ----------------------------------------------------------------------
-
+const paths = [
+  { path: 'search', element: <Search />, access: roles.Search },
+  { path: 'user', element: <User />, access: roles.Add_New_User },
+  { path: 'mastertrack', element: <MasterTrack />, access: roles.Master_Tracker },
+  { path: 'database', element: <Database />, access: roles.Database },
+  { path: 'view', element: <View />, access: roles.View },
+  { path: 'report1', element: <Report1 />, access: roles.Report_1 },
+  { path: 'report2', element: <Report2 />, access: roles.Report_2 }
+];
 export default function Router() {
+  const currentUser = useRecoilValue(currentUserState);
   return useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/user" replace /> },
-        { path: 'search', element: <Search /> },
-        { path: 'user', element: <User /> },
-        { path: 'mastertrack', element: <MasterTrack /> },
-        { path: 'database', element: <Database /> },
-        { path: 'view', element: <View /> },
-        { path: 'report1', element: <Report1 /> },
-        { path: 'report2', element: <Report2 /> }
+        ...(currentUser
+          ? paths.filter((item) => currentUser.roles.includes(item.access))
+          : paths
+        ).map((i) => ({ path: i.path, element: i.element }))
       ]
     },
     {
