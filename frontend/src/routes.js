@@ -16,6 +16,7 @@ import Report1 from './pages/Report1';
 import Report2 from './pages/Report2';
 import roles from './services/roles.config';
 import { currentUserState } from './services/auth.service';
+import sidebarConfig from './layouts/dashboard/SidebarConfig';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -29,12 +30,17 @@ const paths = [
 ];
 export default function Router() {
   const currentUser = useRecoilValue(currentUserState);
+  const path =
+    currentUser && currentUser.roles.length > 0
+      ? sidebarConfig.find((item) => item.access === currentUser.roles[0])
+      : { path: '/dashboard/user' };
+
   return useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/user" replace /> },
+        { element: <Navigate to={path.path} replace /> },
         ...(currentUser
           ? paths.filter((item) => currentUser.roles.includes(item.access))
           : paths
