@@ -50,7 +50,7 @@ export default function View() {
   }, []);
 
   return (
-    <Page title="View | Minimal-UI">
+    <Page title="View">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -82,7 +82,7 @@ export default function View() {
                       Email,
                       FTDAmount,
                       CurrencyValue,
-                      Retention,
+                      RetentionValue,
                       DatabaseValue
                     } = row;
                     return (
@@ -101,7 +101,7 @@ export default function View() {
                             prefix={`${CurrencyValue?.CurrencyCode} `}
                           />
                         </TableCell>
-                        <TableCell align="left">{Retention}</TableCell>
+                        <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
                       </TableRow>
                     );
                   })}

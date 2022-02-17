@@ -93,7 +93,7 @@ export default function Report1() {
   };
 
   return (
-    <Page title="Report 1 | Minimal-UI">
+    <Page title="Report 1">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>

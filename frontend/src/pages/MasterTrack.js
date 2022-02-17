@@ -110,7 +110,7 @@ export default function MasterTrack() {
         .post('/api/tracker/addMasterTrack', data)
         .then((res) => {
           toast.success(`Master Track added successfully`);
-          navigate('/dashboard/search');
+          navigate('/dashboard/view');
         })
         .catch((err) => {
           toast.error('Something went wrong. Please try agin later !');
@@ -120,7 +120,7 @@ export default function MasterTrack() {
   });
 
   return (
-    <Page title="Master Tracker | Minimal-UI">
+    <Page title="Master Tracker">
       <Container maxWidth="md">
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>

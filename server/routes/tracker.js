@@ -55,6 +55,9 @@ router.get("/getMasterTrack", async (req, res) => {
 		const masterTracks = await models.MasterTrack.findAll({
 			where: whereObject,
 			include: [{ all: true }],
+			order: [
+				['DateFTD', 'DESC']
+			]
 		});
 
 		res.status(201).json(masterTracks);
@@ -135,7 +138,7 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 	try {
 		const lsNames = await models.LeadSource.findAll({
 			where: {
-				LeadSourceName: ["VA First", "VA Second"],
+				LeadSourceName: ["VA-First Call", "VA-Transfer Call"],
 			},
 		});
 
@@ -143,6 +146,9 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 			where: {
 				LeadSource: lsNames.map((i) => i.id),
 			},
+			order: [
+				['DateFTD', 'DESC']
+			],
 			include: [{ all: true }],
 		});
 
@@ -156,7 +162,7 @@ router.get("/getUserView", validateToken, async (req, res) => {
 	try {
 		const teams = await models.UserTeam.findAll({
 			where: {
-				user: req.user.id,
+				user: req.user.id
 			},
 		});
 
@@ -164,6 +170,9 @@ router.get("/getUserView", validateToken, async (req, res) => {
 			where: {
 				BI: teams.map((i) => i.bi),
 			},
+			order: [
+				['DateFTD', 'DESC']
+			],
 			include: [{ all: true }],
 		});
 

@@ -71,7 +71,7 @@ export default function Database() {
   });
 
   return (
-    <Page title="Database | Minimal-UI">
+    <Page title="Database">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -103,7 +103,7 @@ export default function Database() {
                       Email,
                       FTDAmount,
                       CurrencyValue,
-                      Retention,
+                      RetentionValue,
                       Database: db
                     } = row;
                     return (
@@ -138,7 +138,7 @@ export default function Database() {
                             prefix={`${CurrencyValue?.CurrencyCode} `}
                           />
                         </TableCell>
-                        <TableCell align="left">{Retention}</TableCell>
+                        <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
                       </TableRow>
                     );
                   })}
