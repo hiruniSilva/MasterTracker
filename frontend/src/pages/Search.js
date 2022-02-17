@@ -52,7 +52,7 @@ export default function Search() {
   }, []);
 
   return (
-    <Page title="Search | Minimal-UI">
+    <Page title="Search">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
