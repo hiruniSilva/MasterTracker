@@ -17,6 +17,7 @@ import Report2 from './pages/Report2';
 import roles from './services/roles.config';
 import { currentUserState } from './services/auth.service';
 import sidebarConfig from './layouts/dashboard/SidebarConfig';
+import PageAccessDenied from './pages/PageAccessDenied';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -41,10 +42,11 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to={path.path} replace /> },
-        ...(currentUser
-          ? paths.filter((item) => currentUser.roles.includes(item.access))
-          : paths
-        ).map((i) => ({ path: i.path, element: i.element }))
+        ...paths.map((i) => ({
+          path: i.path,
+          element:
+            currentUser && currentUser.roles.includes(i.access) ? i.element : <PageAccessDenied />
+        }))
       ]
     },
     {
