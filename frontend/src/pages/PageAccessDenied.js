@@ -13,7 +13,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
   alignItems: 'center',
-  paddingTop: theme.spacing(15),
+  paddingTop: theme.spacing(10),
   paddingBottom: theme.spacing(10)
 }));
 
@@ -26,13 +26,18 @@ export default function PageAccessDenied() {
         <MotionContainer initial="initial" open>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
             <motion.div variants={varBounceIn}>
-              <Typography variant="h3" paragraph>
-                Sorry, This page is not accessible to you
-              </Typography>
+              <Box
+                component="img"
+                src="/static/illustrations/access-denied.jpg"
+                sx={{ height: 260, mx: 'auto' }}
+              />
             </motion.div>
+            {/* <Typography variant="h3" paragraph>
+                Access denied !
+              </Typography> */}
             <Typography sx={{ color: 'text.secondary' }}>
-              Sorry, This page is not accessible to you. Ask your administrator to give you access
-              for this page
+              Sorry, you are not allowed to access this page. Please ask permission from admin to
+              access this page.
             </Typography>
 
             <Button to="/" size="large" variant="contained" component={RouterLink}>
