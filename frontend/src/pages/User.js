@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react';
 
 // material
 import {
+  TablePagination,
   Card,
   Table,
   Stack,
@@ -34,7 +35,7 @@ import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import axios from '../services/api.service';
-import { UserMoreMenu } from '../components/_dashboard/user';
+import { UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 import UserEditForm from '../components/UserForm';
 import UserPasswordForm from '../components/UserPasswordForm';
 
@@ -47,6 +48,8 @@ const TABLE_HEAD = [
 ];
 
 export default function User() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [USERLIST, setUserList] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [passwordReset, setPasswordReset] = useState(null);
@@ -127,6 +130,15 @@ export default function User() {
     fetchData();
   }, []);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Page title="User">
       <Container>
@@ -144,7 +156,6 @@ export default function User() {
             New User
           </Button>
         </Stack>
-
         <Card>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -159,67 +170,70 @@ export default function User() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {USERLIST.map((row) => {
-                    const { id, fullname, email, roles, BIs, createdAt } = row;
-                    return (
-                      <TableRow hover key={id} tabIndex={-1}>
-                        <TableCell component="th" scope="row">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar>{fullname[0]}</Avatar>
-                            <Typography variant="subtitle2" noWrap>
-                              {fullname}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">
-                          {roles.map((role) => (
-                            <Label variant="ghost" color="success">
-                              {sentenceCase(role)}
-                            </Label>
-                          ))}
-                        </TableCell>
-                        <TableCell align="left">{dayjs(createdAt).format('DD/MM/YYYY')}</TableCell>
-                        <TableCell align="right">
-                          <UserMoreMenu
-                            list={[
-                              {
-                                key: 'edit',
-                                icon: <Icon icon={editFill} width={24} height={24} />,
-                                text: 'Edit',
-                                onClick: () =>
-                                  setSelectedUser({
-                                    id,
-                                    fullname,
-                                    email,
-                                    roles,
-                                    teams: BIs.map((i) => i.id)
-                                  })
-                              },
-                              {
-                                key: 'password-reset',
-                                icon: <Icon icon={editFill} width={24} height={24} />,
-                                text: 'Password Reset',
-                                onClick: () => setPasswordReset({ id })
-                              },
-                              {
-                                key: 'delete',
-                                icon: <Icon icon={trash2Outline} width={24} height={24} />,
-                                text: 'Delete',
-                                onClick: () => setDeleteUser({ id })
-                              }
-                            ]}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {USERLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
+                    (row) => {
+                      const { id, fullname, email, roles, BIs, createdAt } = row;
+                      return (
+                        <TableRow hover key={id} tabIndex={-1}>
+                          <TableCell component="th" scope="row">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar>{fullname[0]}</Avatar>
+                              <Typography variant="subtitle2" noWrap>
+                                {fullname}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">
+                            {roles.map((role) => (
+                              <Label variant="ghost" color="success">
+                                {sentenceCase(role)}
+                              </Label>
+                            ))}
+                          </TableCell>
+                          <TableCell align="left">
+                            {dayjs(createdAt).format('DD/MM/YYYY')}
+                          </TableCell>
+                          <TableCell align="right">
+                            <UserMoreMenu
+                              list={[
+                                {
+                                  key: 'edit',
+                                  icon: <Icon icon={editFill} width={24} height={24} />,
+                                  text: 'Edit',
+                                  onClick: () =>
+                                    setSelectedUser({
+                                      id,
+                                      fullname,
+                                      email,
+                                      roles,
+                                      teams: BIs.map((i) => i.id)
+                                    })
+                                },
+                                {
+                                  key: 'password-reset',
+                                  icon: <Icon icon={editFill} width={24} height={24} />,
+                                  text: 'Password Reset',
+                                  onClick: () => setPasswordReset({ id })
+                                },
+                                {
+                                  key: 'delete',
+                                  icon: <Icon icon={trash2Outline} width={24} height={24} />,
+                                  text: 'Delete',
+                                  onClick: () => setDeleteUser({ id })
+                                }
+                              ]}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
         </Card>
-
         <Dialog open={!!selectedUser} onClose={() => setSelectedUser(null)}>
           {selectedUser && (
             <UserEditForm
@@ -249,6 +263,15 @@ export default function User() {
             </Button>
           </DialogActions>
         </Dialog>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={USERLIST.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Container>
     </Page>
   );

@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format';
 
 // material
 import {
+  TablePagination,
   Card,
   Table,
   Stack,
@@ -37,6 +38,8 @@ const TABLE_HEAD = [
 
 export default function View() {
   const [USERLIST, setUserList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     axios
@@ -48,6 +51,15 @@ export default function View() {
         toast.error('Something went wrong. Please try agin later !');
       });
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <Page title="View">
@@ -72,44 +84,55 @@ export default function View() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {USERLIST.map((row) => {
-                    const {
-                      id,
-                      BIvalue,
-                      LeadSourceValue,
-                      Aid,
-                      DateFTD,
-                      Email,
-                      FTDAmount,
-                      CurrencyValue,
-                      RetentionValue,
-                      DatabaseValue
-                    } = row;
-                    return (
-                      <TableRow hover key={id} tabIndex={-1}>
-                        <TableCell align="left">{dayjs(DateFTD).format('DD/MM/YYYY')}</TableCell>
-                        <TableCell align="left">{Aid}</TableCell>
-                        <TableCell align="left">{Email}</TableCell>
-                        <TableCell align="left">{BIvalue?.BIName}</TableCell>
-                        <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
-                        <TableCell align="left">{DatabaseValue?.dbName}</TableCell>
-                        <TableCell align="left">
-                          <NumberFormat
-                            displayType="text"
-                            value={FTDAmount}
-                            thousandSeparator
-                            prefix={`${CurrencyValue?.CurrencyCode} `}
-                          />
-                        </TableCell>
-                        <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {USERLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
+                    (row) => {
+                      const {
+                        id,
+                        BIvalue,
+                        LeadSourceValue,
+                        Aid,
+                        DateFTD,
+                        Email,
+                        FTDAmount,
+                        CurrencyValue,
+                        RetentionValue,
+                        DatabaseValue
+                      } = row;
+                      return (
+                        <TableRow hover key={id} tabIndex={-1}>
+                          <TableCell align="left">{dayjs(DateFTD).format('DD/MM/YYYY')}</TableCell>
+                          <TableCell align="left">{Aid}</TableCell>
+                          <TableCell align="left">{Email}</TableCell>
+                          <TableCell align="left">{BIvalue?.BIName}</TableCell>
+                          <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
+                          <TableCell align="left">{DatabaseValue?.dbName}</TableCell>
+                          <TableCell align="left">
+                            <NumberFormat
+                              displayType="text"
+                              value={FTDAmount}
+                              thousandSeparator
+                              prefix={`${CurrencyValue?.CurrencyCode} `}
+                            />
+                          </TableCell>
+                          <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
         </Card>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={USERLIST.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Container>
     </Page>
   );

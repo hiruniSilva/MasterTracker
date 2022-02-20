@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import NumberFormat from 'react-number-format';
 // material
 import {
+  TablePagination,
   Card,
   Table,
   Stack,
@@ -39,6 +40,8 @@ const TABLE_HEAD = [
 export default function Search() {
   const [USERLIST, setUserList] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     axios
@@ -50,6 +53,15 @@ export default function Search() {
         toast.error('Something went wrong. Please try agin later !');
       });
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <Page title="Search">
@@ -88,7 +100,7 @@ export default function Search() {
                         (item) =>
                           item.Email.startsWith(searchText) || item.Aid.startsWith(searchText)
                       )
-                    : USERLIST
+                    : USERLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ).map((row) => {
                     const {
                       id,
@@ -128,6 +140,15 @@ export default function Search() {
             </TableContainer>
           </Scrollbar>
         </Card>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={USERLIST.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Container>
     </Page>
   );

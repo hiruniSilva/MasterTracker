@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import NumberFormat from 'react-number-format';
 // material
 import {
+  TablePagination,
   Card,
   Table,
   Stack,
@@ -40,6 +41,8 @@ const TABLE_HEAD = [
 export default function Database() {
   const [USERLIST, setUserList] = useState([]);
   const [databases, setDatabases] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     axios
@@ -70,6 +73,15 @@ export default function Database() {
       });
   });
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <Page title="Database">
       <Container>
@@ -93,60 +105,71 @@ export default function Database() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {USERLIST.map((row, index) => {
-                    const {
-                      id,
-                      BIvalue,
-                      LeadSourceValue,
-                      Aid,
-                      DateFTD,
-                      Email,
-                      FTDAmount,
-                      CurrencyValue,
-                      RetentionValue,
-                      Database: db
-                    } = row;
-                    return (
-                      <TableRow hover key={id} tabIndex={-1}>
-                        <TableCell align="left">{dayjs(DateFTD).format('DD/MM/YYYY')}</TableCell>
-                        <TableCell align="left">{Aid}</TableCell>
-                        <TableCell align="left">{Email}</TableCell>
-                        <TableCell align="left">{BIvalue?.BIName}</TableCell>
-                        <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
-                        <TableCell align="left">
-                          <FormControl fullWidth>
-                            <Select
-                              value={db}
-                              onChange={(event) => {
-                                handleDatabaseChange(id, event.target.value);
-                                const newTrackers = [...USERLIST];
-                                newTrackers[index].Database = event.target.value;
-                                setUserList(newTrackers);
-                              }}
-                            >
-                              {databases.map((database) => (
-                                <MenuItem value={database.id}>{database.dbName}</MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        </TableCell>
-                        <TableCell align="left">
-                          <NumberFormat
-                            displayType="text"
-                            value={FTDAmount}
-                            thousandSeparator
-                            prefix={`${CurrencyValue?.CurrencyCode} `}
-                          />
-                        </TableCell>
-                        <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {USERLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
+                    (row, index) => {
+                      const {
+                        id,
+                        BIvalue,
+                        LeadSourceValue,
+                        Aid,
+                        DateFTD,
+                        Email,
+                        FTDAmount,
+                        CurrencyValue,
+                        RetentionValue,
+                        Database: db
+                      } = row;
+                      return (
+                        <TableRow hover key={id} tabIndex={-1}>
+                          <TableCell align="left">{dayjs(DateFTD).format('DD/MM/YYYY')}</TableCell>
+                          <TableCell align="left">{Aid}</TableCell>
+                          <TableCell align="left">{Email}</TableCell>
+                          <TableCell align="left">{BIvalue?.BIName}</TableCell>
+                          <TableCell align="left">{LeadSourceValue?.LeadSourceName}</TableCell>
+                          <TableCell align="left">
+                            <FormControl fullWidth>
+                              <Select
+                                value={db}
+                                onChange={(event) => {
+                                  handleDatabaseChange(id, event.target.value);
+                                  const newTrackers = [...USERLIST];
+                                  newTrackers[index].Database = event.target.value;
+                                  setUserList(newTrackers);
+                                }}
+                              >
+                                {databases.map((database) => (
+                                  <MenuItem value={database.id}>{database.dbName}</MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </TableCell>
+                          <TableCell align="left">
+                            <NumberFormat
+                              displayType="text"
+                              value={FTDAmount}
+                              thousandSeparator
+                              prefix={`${CurrencyValue?.CurrencyCode} `}
+                            />
+                          </TableCell>
+                          <TableCell align="left">{RetentionValue?.retentionName}</TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
         </Card>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={USERLIST.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Container>
     </Page>
   );

@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format';
 
 // material
 import {
+  TablePagination,
   TableBody,
   TableRow,
   Table,
@@ -170,7 +171,7 @@ export default function Report1() {
                 </TableHead>
 
                 <TableBody>
-                  {report.map((row) => {
+                  {report1List.map((row) => {
                     const { id, BIName, NoFTD, FTDAmount, Sources } = row;
                     return (
                       <TableRow hover key={id} tabIndex={-1}>
