@@ -31,7 +31,14 @@ router.get("/getTodayData", async (req, res) => {
 				},
 			},
 		});
+		const headCountObj = await models.Config.findOne({
+			where: {
+				key: "HEAD_COUNT"
+			},
+		});
+
         res.status(201).json({
+			headCount: headCountObj ? headCountObj.value : 0,
 			forVATransferCallValue: forVATransferCall ? forVATransferCall.value : null,
 			vaFirstCalls: data,
 		});
@@ -88,12 +95,7 @@ router.post("/setTodayData", async (req, res) => {
 			});
 		}
 		res.status(201).json({
-			forVATransferCallValue: forVATransferCall ? forVATransferCall.value : null,
-			vaFirstCalls: vaCalls.map(call => ({
-				BI: call.BI,
-				BIName: call.BIvalue.BIName,
-				canvases: call.canvases,
-			})),
+			message: "Data set successfully"
 		});
 	} catch (error) {
 		res.status(400).send(error.message);
