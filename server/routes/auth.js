@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
 		const validPassword = await user.comparePassword(password);
 		if (!validPassword) throw new Error("Incorrect Email or Password");
 		const tokens = user.generateTokens()
-		res.cookie('token', tokens.accessToken, {maxAge: config.ACCESS_TOKEN_LIFE * 1000})
+		res.cookie('token', tokens.accessToken)
 		res.status(200).json({
 			tokens: tokens,
 			user: user.toUserJson(),
