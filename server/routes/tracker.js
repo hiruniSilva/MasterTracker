@@ -84,6 +84,15 @@ router.get("/getRetentionNames", async (req, res) => {
 	}
 });
 
+router.get("/getBranches", async(req,res)=>{
+	try{
+		const branches = await models.Branch.findAll({ include: { all: true } });
+		res.status(201).json(branches);
+	}catch(error){
+		res.status(400).send(error.message);
+	}
+});
+
 router.post("/addMasterTrack", async (req, res) => {
 	try {
 		const { bi, leadSource, brand, aid, dateFtd, email, ftdAmount, currCode, salesAgent, retention } = req.body;
@@ -113,6 +122,24 @@ router.post("/addMasterTrack", async (req, res) => {
 			Retention: retention,
 		});
 		res.status(201).json(addMasterTrack);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.post("/createBranch", async (req, res) => {
+	try {
+		const {branchName, subBIs} = req.body;
+		const branch = await models.Branch.create({
+			BranchName: branchName
+		});
+		const bis = await models.BI.findAll({
+			where: {
+				id: subBIs || {},
+			},
+		});
+		await branch.setBIs(bis);
+		res.status(200).json(branch);
 	} catch (error) {
 		res.status(400).send(error.message);
 	}

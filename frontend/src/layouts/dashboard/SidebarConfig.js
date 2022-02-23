@@ -40,16 +40,22 @@ const sidebarConfig = [
     access: roles.View
   },
   {
-    title: 'Report 1',
+    title: 'Report 1 - Sub BI',
     path: '/dashboard/report1',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_1
   },
   {
-    title: 'Report 2',
+    title: 'Report 2 - Database',
     path: '/dashboard/report2',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_2
+  },
+  {
+    title: 'Add Branch',
+    path: '/dashboard/addBranch',
+    icon: getIcon('iconoir:reports'),
+    access: roles.Add_Branch
   }
 ];
 

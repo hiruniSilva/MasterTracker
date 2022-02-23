@@ -18,6 +18,7 @@ import roles from './services/roles.config';
 import { currentUserState } from './services/auth.service';
 import sidebarConfig from './layouts/dashboard/SidebarConfig';
 import PageAccessDenied from './pages/PageAccessDenied';
+import AddBranch from './pages/AddBranch';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -27,7 +28,8 @@ const paths = [
   { path: 'database', element: <Database />, access: roles.Database },
   { path: 'view', element: <View />, access: roles.View },
   { path: 'report1', element: <Report1 />, access: roles.Report_1 },
-  { path: 'report2', element: <Report2 />, access: roles.Report_2 }
+  { path: 'report2', element: <Report2 />, access: roles.Report_2 },
+  { path: 'addBranch', element: <AddBranch />, access: roles.Add_Branch }
 ];
 export default function Router() {
   const currentUser = useRecoilValue(currentUserState);
