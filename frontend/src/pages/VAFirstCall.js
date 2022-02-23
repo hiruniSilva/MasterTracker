@@ -31,6 +31,7 @@ const TABLE_HEAD = [
 export default function VAFirstCall() {
   const [CallList, setCallList] = useState([]);
   const [transferCallValue, setTransferCallValue] = useState(null);
+  const [headCount, setHeadCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function VAFirstCall() {
       .then((res) => {
         setCallList(res.data.vaFirstCalls);
         setTransferCallValue(res.data.forVATransferCallValue);
+        setHeadCount(res.data.headCount);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
@@ -64,6 +66,8 @@ export default function VAFirstCall() {
         setIsSubmitting(false);
       });
   }, [CallList, transferCallValue]);
+
+  const total = CallList.reduce((acc, val) => acc + (+val.canvases || 0), 0);
 
   return (
     <Page title="VA First Call">
@@ -119,8 +123,14 @@ export default function VAFirstCall() {
                   <TableRow hover tabIndex={-1}>
                     <TableCell align="left">Total</TableCell>
                     <TableCell align="left">
+                      <Typography pl={1}>{total}</Typography>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover tabIndex={-1}>
+                    <TableCell align="left">Average</TableCell>
+                    <TableCell align="left">
                       <Typography pl={1}>
-                        {CallList.reduce((acc, val) => acc + (+val.canvases || 0), 0)}
+                        {headCount > 0 ? total / headCount : 'Set Head Count to view Average'}
                       </Typography>
                     </TableCell>
                   </TableRow>
