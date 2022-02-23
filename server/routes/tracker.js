@@ -130,6 +130,12 @@ router.post("/addMasterTrack", async (req, res) => {
 router.post("/createBranch", async (req, res) => {
 	try {
 		const {branchName, subBIs} = req.body;
+		const isValid = models.Branch.validateBranchData({
+			branchName,
+			subBIs
+		});
+		if (!isValid) throw new Error("Invalid Data. Please try again !!");
+
 		const branch = await models.Branch.create({
 			BranchName: branchName
 		});

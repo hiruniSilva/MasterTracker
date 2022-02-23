@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import axios from '../services/api.service';
 
+const Yup = require('yup');
+
 export default function AddBranch() {
   const navigate = useNavigate();
 
@@ -36,6 +38,18 @@ export default function AddBranch() {
         toast.error('Something went wrong. Please try agin later !');
       });
   }, []);
+
+  const schema = Yup.object().shape({
+    branchName: Yup.string().required('Required !'),
+    subBIs: Yup.array().of(Yup.string()).required()
+  });
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     branchName: '',
+  //     subBIs:
+  //   }
+  // })
 
   return (
     <Page title="Add Branch">
