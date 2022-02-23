@@ -6,7 +6,8 @@ const roles = {
   View: 'VIEW',
   Report_1: 'REPORT_1',
   Report_2: 'REPORT_2',
-  Add_Branch: 'ADD_BRANCH'
+  Add_Branch: 'ADD_BRANCH',
+  VA_First_Call: 'VA_First_Call'
 };
 
 export default roles;

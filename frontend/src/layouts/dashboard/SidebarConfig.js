@@ -56,6 +56,12 @@ const sidebarConfig = [
     path: '/dashboard/addBranch',
     icon: getIcon('iconoir:reports'),
     access: roles.Add_Branch
+  },
+  {
+    title: 'VA First Calls',
+    path: '/dashboard/vafirstcall',
+    icon: getIcon('iconoir:reports'),
+    access: roles.VA_First_Call
   }
 ];
 

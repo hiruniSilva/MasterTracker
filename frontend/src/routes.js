@@ -19,6 +19,7 @@ import { currentUserState } from './services/auth.service';
 import sidebarConfig from './layouts/dashboard/SidebarConfig';
 import PageAccessDenied from './pages/PageAccessDenied';
 import AddBranch from './pages/AddBranch';
+import VAFirstCall from './pages/VAFirstCall';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -29,7 +30,8 @@ const paths = [
   { path: 'view', element: <View />, access: roles.View },
   { path: 'report1', element: <Report1 />, access: roles.Report_1 },
   { path: 'report2', element: <Report2 />, access: roles.Report_2 },
-  { path: 'addBranch', element: <AddBranch />, access: roles.Add_Branch }
+  { path: 'addBranch', element: <AddBranch />, access: roles.Add_Branch },
+  { path: 'vafirstcall', element: <VAFirstCall />, access: roles.VA_First_Call }
 ];
 export default function Router() {
   const currentUser = useRecoilValue(currentUserState);
