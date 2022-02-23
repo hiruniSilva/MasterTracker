@@ -4,10 +4,8 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Branches', [{
       BranchName: 'Alpho',
-      BI: 1
     },{
       BranchName: 'Evolve',
-      BI: 2
     }], {});
   },
 
