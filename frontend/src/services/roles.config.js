@@ -5,7 +5,8 @@ const roles = {
   Database: 'DATABASE',
   View: 'VIEW',
   Report_1: 'REPORT_1',
-  Report_2: 'REPORT_2'
+  Report_2: 'REPORT_2',
+  VA_First_Call: 'VA_First_Call'
 };
 
 export default roles;

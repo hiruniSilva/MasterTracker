@@ -50,6 +50,12 @@ const sidebarConfig = [
     path: '/dashboard/report2',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_2
+  },
+  {
+    title: 'VA First Calls',
+    path: '/dashboard/vafirstcall',
+    icon: getIcon('iconoir:reports'),
+    access: roles.VA_First_Call
   }
 ];
 
