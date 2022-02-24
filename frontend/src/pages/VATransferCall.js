@@ -30,6 +30,7 @@ const TABLE_HEAD = [
 
 export default function VATransferCall() {
   const [CallList, setCallList] = useState([]);
+  const [transferCallValue, setTransferCallValue] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function VATransferCall() {
       .get('/api/vatransfercall/getTodayData')
       .then((res) => {
         setCallList(res.data.vaTransferCalls);
+        setTransferCallValue(res.data.forVATransferCallValue);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
@@ -113,14 +115,12 @@ export default function VATransferCall() {
                       <Typography pl={1}>{total}</Typography>
                     </TableCell>
                   </TableRow>
-                  {/* <TableRow hover tabIndex={-1}>
+                  <TableRow hover tabIndex={-1}>
                     <TableCell align="left">Average</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>
-                        {headCount > 0 ? total / headCount : 'Set Head Count to view Average'}
-                      </Typography>
+                      <Typography pl={1}>{transferCallValue / total}</Typography>
                     </TableCell>
-                  </TableRow> */}
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>

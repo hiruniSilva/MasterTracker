@@ -2,6 +2,7 @@ import express from "express";
 import dayjs from "dayjs";
 import models from "../models";
 import { Op } from "sequelize";
+import _ from "lodash";
 
 const router = express.Router();
 
@@ -40,6 +41,37 @@ router.get("/getTodayData", async (req, res) => {
         res.status(201).json({
 			headCount: headCountObj ? headCountObj.value : 0,
 			forVATransferCallValue: forVATransferCall ? forVATransferCall.value : null,
+			vaFirstCalls: data,
+		});
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/report", async (req, res) => {
+	try {
+		const startDate = dayjs(dayjs(req.query.startDate).format("YYYY-MM-DD")).toDate()
+		const endDate = dayjs(dayjs(req.query.endDate).format("YYYY-MM-DD")).add(1,'day').toDate()
+		const vaCalls = await models.VAFirstCall.findAll({
+			where: {
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
+			include: [{ all: true }],
+		});
+
+		const grouped = _.groupBy(vaCalls, (call) => call.BI);
+		const bis = await models.BI.findAll();
+		const data = bis.map((bi) => {
+			return {
+				BI: bi.id,
+				BIName: bi.BIName,
+				canvases: grouped[bi.id] ? grouped[bi.id].reduce((acc, call) => acc + call.canvases, 0) : 0,
+			};
+		});
+
+        res.status(200).json({
 			vaFirstCalls: data,
 		});
 	} catch (error) {

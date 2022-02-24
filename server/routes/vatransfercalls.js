@@ -24,9 +24,18 @@ router.get("/getTodayData", async (req, res) => {
 				Transfer: vaCall ? vaCall.Transfer : null,
 			};
 		});
+
+		const forVATransferCall = await models.ForVATransferCall.findOne({
+			where: {
+				createdAt: {
+					[Op.gte]: dayjs(dayjs().format("YYYY-MM-DD")).toDate(),
+				},
+			},
+		});
        
         res.status(201).json({
 			vaTransferCalls: data,
+			forVATransferCallValue: forVATransferCall ? forVATransferCall.value : null,
 		});
 	} catch (error) {
 		res.status(400).send(error.message);
