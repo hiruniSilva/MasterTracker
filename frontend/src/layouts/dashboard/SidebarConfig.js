@@ -54,7 +54,7 @@ const sidebarConfig = [
   {
     title: 'Add Branch',
     path: '/dashboard/addBranch',
-    icon: getIcon('iconoir:reports'),
+    icon: getIcon('eos-icons:branch'),
     access: roles.Add_Branch
   },
   {
