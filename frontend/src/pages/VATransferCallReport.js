@@ -28,11 +28,11 @@ import Page from '../components/Page';
 import axios from '../services/api.service';
 
 const TABLE_HEAD = [
-  { id: 'team', label: 'Team', alignRight: false },
-  { id: 'canvases', label: 'Canvases', alignRight: false }
+  { id: 'branch', label: 'Branch', alignRight: false },
+  { id: 'transfer', label: 'Transfer', alignRight: false }
 ];
 
-export default function VAFirstCallReport() {
+export default function VATransferCallReport() {
   const [reportList, setreportList] = useState([]);
 
   const [value1, setValue1] = useState(null);
@@ -42,12 +42,12 @@ export default function VAFirstCallReport() {
     if (!value1 || !value2) return;
     axios
       .get(
-        `/api/vafirstcall/report?startDate=${dayjs(value1).format('YYYY-MM-DD')}&endDate=${dayjs(
+        `/api/vatransfercall/report?startDate=${dayjs(value1).format('YYYY-MM-DD')}&endDate=${dayjs(
           value2
         ).format('YYYY-MM-DD')}`
       )
       .then((res) => {
-        setreportList(res.data.vaFirstCalls);
+        setreportList(res.data.vaTransferCalls);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
@@ -55,11 +55,11 @@ export default function VAFirstCallReport() {
   }, [value1, value2]);
 
   return (
-    <Page title="Report - First Call">
+    <Page title="Report - VA Transfer Call">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Report - VA First Call
+            Report - VA Transfer Call
           </Typography>
         </Stack>
 
@@ -114,11 +114,11 @@ export default function VAFirstCallReport() {
 
                 <TableBody>
                   {reportList.map((row) => {
-                    const { BI, BIName, canvases } = row;
+                    const { Branch, BranchName, Transfers } = row;
                     return (
-                      <TableRow hover key={BI} tabIndex={-1}>
-                        <TableCell align="left">{BIName}</TableCell>
-                        <TableCell align="left">{canvases}</TableCell>
+                      <TableRow hover key={Branch} tabIndex={-1}>
+                        <TableCell align="left">{BranchName}</TableCell>
+                        <TableCell align="left">{Transfers}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -126,7 +126,7 @@ export default function VAFirstCallReport() {
                     <TableRow hover tabIndex={-1}>
                       <TableCell align="left">TOTAL</TableCell>
                       <TableCell align="left">
-                        {reportList.reduce((a, b) => a + b.canvases, 0)}
+                        {reportList.reduce((a, b) => a + b.Transfers, 0)}
                       </TableCell>
                     </TableRow>
                   )}

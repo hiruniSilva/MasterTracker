@@ -74,6 +74,12 @@ const sidebarConfig = [
     path: '/dashboard/reportvafirstcall',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_VA_First_Call
+  },
+  {
+    title: 'Report - VA Transfer Calls',
+    path: '/dashboard/reportvatransfercall',
+    icon: getIcon('iconoir:reports'),
+    access: roles.Report_VA_Transfer_Call
   }
 ];
 

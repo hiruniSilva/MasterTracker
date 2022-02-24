@@ -2,6 +2,7 @@ import express from "express";
 import dayjs from "dayjs";
 import models from "../models";
 import { Op } from "sequelize";
+import _ from "lodash";
 
 const router = express.Router();
 
@@ -36,6 +37,37 @@ router.get("/getTodayData", async (req, res) => {
         res.status(201).json({
 			vaTransferCalls: data,
 			forVATransferCallValue: forVATransferCall ? forVATransferCall.value : null,
+		});
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/report", async (req, res) => {
+	try {
+		const startDate = dayjs(dayjs(req.query.startDate).format("YYYY-MM-DD")).toDate()
+		const endDate = dayjs(dayjs(req.query.endDate).format("YYYY-MM-DD")).add(1,'day').toDate()
+		const vaTransferCalls = await models.VATransferCall.findAll({
+			where: {
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
+			include: [{ all: true }],
+		});
+
+		const grouped = _.groupBy(vaTransferCalls, (call) => call.Branch);
+		const branches = await models.Branch.findAll();
+		const data = branches.map((branch) => {
+			return {
+				Branch: branch.id,
+				BranchName: branch.BranchName,
+				Transfers: grouped[branch.id] ? grouped[branch.id].reduce((acc, call) => acc + call.transfers, 0) : 0,
+			};
+		});
+
+        res.status(200).json({
+			vaTransferCalls: data,
 		});
 	} catch (error) {
 		res.status(400).send(error.message);

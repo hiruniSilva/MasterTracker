@@ -22,6 +22,7 @@ import AddBranch from './pages/AddBranch';
 import VAFirstCall from './pages/VAFirstCall';
 import VATransferCall from './pages/VATransferCall';
 import VAFirstCallReport from './pages/VAFirstCallReport';
+import VATransferCallReport from './pages/VATransferCallReport';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -35,7 +36,12 @@ const paths = [
   { path: 'addBranch', element: <AddBranch />, access: roles.Add_Branch },
   { path: 'vafirstcall', element: <VAFirstCall />, access: roles.VA_First_Call },
   { path: 'vatransfercall', element: <VATransferCall />, access: roles.VA_Transfer_Call },
-  { path: 'reportvafirstcall', element: <VAFirstCallReport />, access: roles.Report_VA_First_Call }
+  { path: 'reportvafirstcall', element: <VAFirstCallReport />, access: roles.Report_VA_First_Call },
+  {
+    path: 'reportvatransfercall',
+    element: <VATransferCallReport />,
+    access: roles.Report_VA_Transfer_Call
+  }
 ];
 export default function Router() {
   const currentUser = useRecoilValue(currentUserState);
