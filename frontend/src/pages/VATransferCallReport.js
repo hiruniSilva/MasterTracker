@@ -16,7 +16,8 @@ import {
   TextField,
   TableCell,
   TableContainer,
-  TableHead
+  TableHead,
+  Grid
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -131,89 +132,100 @@ export default function VATransferCallReport() {
           </Stack>
         </Stack>
         <br />
-        <Typography variant="h5" gutterBottom>
-          VA Transfer Call
-        </Typography>
-        <Card>
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {TABLE_HEAD.map((headCell) => (
-                      <TableCell key={headCell.id} align={headCell.alignRight ? 'right' : 'left'}>
-                        {headCell.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {reportList.map((row) => {
-                    const { Branch, BranchName, Transfers } = row;
-                    return (
-                      <TableRow hover key={Branch} tabIndex={-1}>
-                        <TableCell align="left">{BranchName}</TableCell>
-                        <TableCell align="left">{Transfers}</TableCell>
+        <Grid container spacing={2} columns={16}>
+          <Grid item xs={16} md={8}>
+            <Typography variant="h5" gutterBottom>
+              VA Transfer Call
+            </Typography>
+            <Card>
+              <Scrollbar>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        {TABLE_HEAD.map((headCell) => (
+                          <TableCell
+                            key={headCell.id}
+                            align={headCell.alignRight ? 'right' : 'left'}
+                          >
+                            {headCell.label}
+                          </TableCell>
+                        ))}
                       </TableRow>
-                    );
-                  })}
-                  {reportList.length > 0 && (
-                    <TableRow hover tabIndex={-1}>
-                      <TableCell align="left">TOTAL</TableCell>
-                      <TableCell align="left">
-                        {reportList.reduce((a, b) => a + b.Transfers, 0)}
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
+                    </TableHead>
 
-        <Typography variant="h5" gutterBottom sx={{ marginTop: 3 }}>
-          VA - Transfer Call Convertion Ratio
-        </Typography>
-        <Card>
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {TABLE_HEAD.map((headCell) => (
-                      <TableCell key={headCell.id} align={headCell.alignRight ? 'right' : 'left'}>
-                        {headCell.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {reportList.map((row) => {
-                    const { Branch, BranchName, Transfers } = row;
-                    return (
-                      <TableRow hover key={Branch} tabIndex={-1}>
-                        <TableCell align="left">{BranchName}</TableCell>
-                        <TableCell align="left">
-                          {Transfers > 0 ? transferCallValue / Transfers : 'No Transfer Value'}
-                        </TableCell>
+                    <TableBody>
+                      {reportList.map((row) => {
+                        const { Branch, BranchName, Transfers } = row;
+                        return (
+                          <TableRow hover key={Branch} tabIndex={-1}>
+                            <TableCell align="left">{BranchName}</TableCell>
+                            <TableCell align="left">{Transfers}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {reportList.length > 0 && (
+                        <TableRow hover tabIndex={-1}>
+                          <TableCell align="left">TOTAL</TableCell>
+                          <TableCell align="left">
+                            {reportList.reduce((a, b) => a + b.Transfers, 0)}
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+            </Card>
+          </Grid>
+          <Grid item xs={16} md={8}>
+            <Typography variant="h5" gutterBottom>
+              VA - Transfer Call Convertion Ratio
+            </Typography>
+            <Card>
+              <Scrollbar>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        {TABLE_HEAD.map((headCell) => (
+                          <TableCell
+                            key={headCell.id}
+                            align={headCell.alignRight ? 'right' : 'left'}
+                          >
+                            {headCell.label}
+                          </TableCell>
+                        ))}
                       </TableRow>
-                    );
-                  })}
-                  {reportList.length > 0 && (
-                    <TableRow hover tabIndex={-1}>
-                      <TableCell align="left">TOTAL</TableCell>
-                      <TableCell align="left">
-                        {total > 0 ? transferCallValue / total : 'No Total Value'}
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
+                    </TableHead>
+
+                    <TableBody>
+                      {reportList.map((row) => {
+                        const { Branch, BranchName, Transfers } = row;
+                        return (
+                          <TableRow hover key={Branch} tabIndex={-1}>
+                            <TableCell align="left">{BranchName}</TableCell>
+                            <TableCell align="left">
+                              {Transfers > 0 ? transferCallValue / Transfers : 'No Transfer Value'}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {reportList.length > 0 && (
+                        <TableRow hover tabIndex={-1}>
+                          <TableCell align="left">TOTAL</TableCell>
+                          <TableCell align="left">
+                            {total > 0 ? transferCallValue / total : 'No Total Value'}
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+            </Card>
+          </Grid>
+        </Grid>
         <Typography variant="h5" gutterBottom sx={{ marginTop: 3 }}>
           Total For VA - Transfer Call : {forVATransferCallList.reduce((a, b) => a + b, 0)}
         </Typography>
