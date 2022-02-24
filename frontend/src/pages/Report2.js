@@ -70,11 +70,11 @@ export default function Report2() {
   }, [value1, value2]);
 
   return (
-    <Page title="Report 2">
+    <Page title="Report 2 - Database">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Report 2
+            Report 2 - Database
           </Typography>
         </Stack>
 

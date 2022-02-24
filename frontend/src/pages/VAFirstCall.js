@@ -24,8 +24,8 @@ import Scrollbar from '../components/Scrollbar';
 import axios from '../services/api.service';
 
 const TABLE_HEAD = [
-  { id: 'biName', label: 'BI Name', alignRight: false },
-  { id: 'canvases', label: 'Canvases', alignRight: true }
+  { id: 'biName', label: 'Sub BI Name', alignRight: false },
+  { id: 'canvases', label: 'Canvases', alignRight: false }
 ];
 
 export default function VAFirstCall() {
@@ -78,7 +78,7 @@ export default function VAFirstCall() {
           </Typography>
           <TextField
             margin="dense"
-            label="For VA - Transfer Calls"
+            label="For VA - Transfer Call"
             type="number"
             autoFocus
             value={transferCallValue}

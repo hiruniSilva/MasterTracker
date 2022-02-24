@@ -30,7 +30,7 @@ import axios from '../services/api.service';
 import config from '../config';
 
 const TABLE_HEAD = [
-  { id: 'team', label: 'Team', alignRight: false },
+  { id: 'team', label: 'Sub BI', alignRight: false },
   { id: 'canvases', label: 'Canvases', alignRight: false }
 ];
 
@@ -83,11 +83,11 @@ export default function VAFirstCallReport() {
   const total = reportList.reduce((a, b) => a + b.canvases, 0);
 
   return (
-    <Page title="Report - First Call">
+    <Page title="Report 3 - VA First Call">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Report - VA First Call
+            Report 3 - VA First Call
           </Typography>
         </Stack>
 

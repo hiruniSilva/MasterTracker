@@ -25,7 +25,7 @@ import axios from '../services/api.service';
 
 const TABLE_HEAD = [
   { id: 'branchName', label: 'Branch Name', alignRight: false },
-  { id: 'transfer', label: 'Transfer', alignRight: true }
+  { id: 'transfer', label: 'Transfer', alignRight: false }
 ];
 
 export default function VATransferCall() {

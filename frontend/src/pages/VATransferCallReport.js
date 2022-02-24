@@ -30,7 +30,7 @@ import axios from '../services/api.service';
 import config from '../config';
 
 const TABLE_HEAD = [
-  { id: 'branch', label: 'Branch', alignRight: false },
+  { id: 'branch', label: 'Branch Name', alignRight: false },
   { id: 'transfer', label: 'Transfer', alignRight: false }
 ];
 
@@ -88,11 +88,11 @@ export default function VATransferCallReport() {
   const total = reportList.reduce((a, b) => a + b.Transfers, 0);
 
   return (
-    <Page title="Report - VA Transfer Call">
+    <Page title="Report 4 - VA Transfer Call">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Report - VA Transfer Call
+            Report 4 - VA Transfer Call
           </Typography>
         </Stack>
 

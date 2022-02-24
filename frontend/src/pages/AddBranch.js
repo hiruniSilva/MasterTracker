@@ -90,7 +90,7 @@ export default function AddBranch() {
               />
             </FormControl>{' '}
             <FormControl fullWidth margin="dense">
-              <InputLabel id="multiple-team-label">Teams</InputLabel>
+              <InputLabel id="multiple-team-label">Sub BI</InputLabel>
               <Select
                 labelId="multiple-team-label"
                 multiple

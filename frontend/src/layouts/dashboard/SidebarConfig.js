@@ -58,25 +58,25 @@ const sidebarConfig = [
     access: roles.Add_Branch
   },
   {
-    title: 'VA First Calls',
+    title: 'VA - First Call',
     path: '/dashboard/vafirstcall',
-    icon: getIcon('iconoir:reports'),
+    icon: getIcon('entypo:add-to-list'),
     access: roles.VA_First_Call
   },
   {
-    title: 'VA Transfer Calls',
+    title: 'VA - Transfer Call',
     path: '/dashboard/vatransfercall',
-    icon: getIcon('iconoir:reports'),
+    icon: getIcon('entypo:add-to-list'),
     access: roles.VA_Transfer_Call
   },
   {
-    title: 'Report - VA First Calls',
+    title: 'Report 3 - VA First Calls',
     path: '/dashboard/reportvafirstcall',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_VA_First_Call
   },
   {
-    title: 'Report - VA Transfer Calls',
+    title: 'Report 4 - VA Transfer Calls',
     path: '/dashboard/reportvatransfercall',
     icon: getIcon('iconoir:reports'),
     access: roles.Report_VA_Transfer_Call
