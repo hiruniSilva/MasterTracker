@@ -27,6 +27,8 @@ import Scrollbar from '../components/Scrollbar';
 import Page from '../components/Page';
 import axios from '../services/api.service';
 
+import config from '../config';
+
 const TABLE_HEAD = [
   { id: 'team', label: 'Team', alignRight: false },
   { id: 'canvases', label: 'Canvases', alignRight: false }
@@ -34,6 +36,7 @@ const TABLE_HEAD = [
 
 export default function VAFirstCallReport() {
   const [reportList, setreportList] = useState([]);
+  const [sourceList, setSourceList] = useState([]);
 
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
@@ -52,7 +55,32 @@ export default function VAFirstCallReport() {
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
       });
+    axios
+      .get(
+        `/api/tracker/report1?startDate=${dayjs(value1).format('YYYY-MM-DD')}&endDate=${dayjs(
+          value2
+        ).format('YYYY-MM-DD')}`
+      )
+      .then((res) => {
+        setSourceList(res.data);
+      })
+      .catch((err) => {
+        toast.error('Something went wrong. Please try agin later !');
+      });
   }, [value1, value2]);
+
+  const getSourceTotal = () => {
+    const data = {};
+    sourceList
+      .map((i) => i.Sources)
+      .flat()
+      .forEach((i) => {
+        data[i.LeadSourceName] = (data[i.LeadSourceName] || 0) + i.Count;
+      });
+    return data;
+  };
+
+  const total = reportList.reduce((a, b) => a + b.canvases, 0);
 
   return (
     <Page title="Report - First Call">
@@ -123,12 +151,24 @@ export default function VAFirstCallReport() {
                     );
                   })}
                   {reportList.length > 0 && (
-                    <TableRow hover tabIndex={-1}>
-                      <TableCell align="left">TOTAL</TableCell>
-                      <TableCell align="left">
-                        {reportList.reduce((a, b) => a + b.canvases, 0)}
-                      </TableCell>
-                    </TableRow>
+                    <>
+                      <TableRow hover tabIndex={-1}>
+                        <TableCell align="left">TOTAL</TableCell>
+                        <TableCell align="left">
+                          {reportList.reduce((a, b) => a + b.canvases, 0)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow hover tabIndex={-1}>
+                        <TableCell align="left">VA First Call Convertion</TableCell>
+                        <TableCell align="left">
+                          {total > 0
+                            ? ((getSourceTotal()[config.VA_FIRST_CALL_NAME] || 0) / total).toFixed(
+                                2
+                              )
+                            : ''}
+                        </TableCell>
+                      </TableRow>
+                    </>
                   )}
                 </TableBody>
               </Table>
