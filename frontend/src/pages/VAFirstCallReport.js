@@ -165,7 +165,7 @@ export default function VAFirstCallReport() {
                             ? ((getSourceTotal()[config.VA_FIRST_CALL_NAME] || 0) / total).toFixed(
                                 2
                               )
-                            : ''}
+                            : 'No Total Value'}
                         </TableCell>
                       </TableRow>
                     </>

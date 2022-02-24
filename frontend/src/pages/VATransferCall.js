@@ -118,7 +118,9 @@ export default function VATransferCall() {
                   <TableRow hover tabIndex={-1}>
                     <TableCell align="left">Average</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>{transferCallValue / total}</Typography>
+                      <Typography pl={1}>
+                        {total > 0 ? transferCallValue / total : 'No Total Value'}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 </TableBody>

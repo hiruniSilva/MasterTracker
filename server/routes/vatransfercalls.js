@@ -66,8 +66,17 @@ router.get("/report", async (req, res) => {
 			};
 		});
 
+		let forVATransferCalls = await models.ForVATransferCall.findAll({
+			where: {
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
+		});
+
         res.status(200).json({
 			vaTransferCalls: data,
+			forVATransferCalls: forVATransferCalls.map((call)=>call.value)
 		});
 	} catch (error) {
 		res.status(400).send(error.message);
