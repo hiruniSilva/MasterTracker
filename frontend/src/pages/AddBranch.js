@@ -59,6 +59,7 @@ export default function AddBranch() {
         .post('/api/tracker/createBranch', data)
         .then((res) => {
           toast.success(`Branch added successfully`);
+          formik.resetForm();
           // navigate('/dashboard/view');
         })
         .catch((err) => {

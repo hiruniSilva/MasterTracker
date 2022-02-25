@@ -25,7 +25,7 @@ import axios from '../services/api.service';
 
 const TABLE_HEAD = [
   { id: 'branchName', label: 'Branch Name', alignRight: false },
-  { id: 'transfer', label: 'Transfer', alignRight: false }
+  { id: 'Transfer', label: 'Transfer', alignRight: false }
 ];
 
 export default function VATransferCall() {
@@ -51,7 +51,7 @@ export default function VATransferCall() {
       .post('/api/vatransfercall/setTodayData', {
         data: CallList.map((call) => ({
           branch: call.Id,
-          transfer: call.Transfer
+          Transfer: call.Transfer
         }))
       })
       .then((res) => {

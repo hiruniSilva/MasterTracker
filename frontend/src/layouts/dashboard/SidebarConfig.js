@@ -40,18 +40,6 @@ const sidebarConfig = [
     access: roles.View
   },
   {
-    title: 'Report 1 - Sub BI',
-    path: '/dashboard/report1',
-    icon: getIcon('iconoir:reports'),
-    access: roles.Report_1
-  },
-  {
-    title: 'Report 2 - Database',
-    path: '/dashboard/report2',
-    icon: getIcon('iconoir:reports'),
-    access: roles.Report_2
-  },
-  {
     title: 'Add Branch',
     path: '/dashboard/addBranch',
     icon: getIcon('eos-icons:branch'),
@@ -68,6 +56,18 @@ const sidebarConfig = [
     path: '/dashboard/vatransfercall',
     icon: getIcon('entypo:add-to-list'),
     access: roles.VA_Transfer_Call
+  },
+  {
+    title: 'Report 1 - Sub BI',
+    path: '/dashboard/report1',
+    icon: getIcon('iconoir:reports'),
+    access: roles.Report_1
+  },
+  {
+    title: 'Report 2 - Database',
+    path: '/dashboard/report2',
+    icon: getIcon('iconoir:reports'),
+    access: roles.Report_2
   },
   {
     title: 'Report 3 - VA First Calls',

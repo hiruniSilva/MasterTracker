@@ -62,7 +62,7 @@ router.get("/report", async (req, res) => {
 			return {
 				Branch: branch.id,
 				BranchName: branch.BranchName,
-				Transfers: grouped[branch.id] ? grouped[branch.id].reduce((acc, call) => acc + call.transfers, 0) : 0,
+				Transfer: grouped[branch.id] ? grouped[branch.id].reduce((acc, call) => acc + call.Transfer, 0) : 0,
 			};
 		});
 
@@ -99,13 +99,13 @@ router.post("/setTodayData", async (req, res) => {
 			let vaCall = vaCalls.find((call) => call.Branch == element.branch);
 			if (vaCall) {
 				vaCall.set({
-					Transfer: element.transfer || null,
+					Transfer: element.Transfer || null,
 				});
 				await vaCall.save();
 			} else {
 				vaCall = await models.VATransferCall.create({
 					Branch: element.branch,
-					Transfer: element.transfer || null,
+					Transfer: element.Transfer || null,
 				});
 				vaCalls.push(vaCall);
 			}

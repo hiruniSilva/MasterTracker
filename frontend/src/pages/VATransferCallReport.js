@@ -32,7 +32,7 @@ import config from '../config';
 
 const TABLE_HEAD = [
   { id: 'branch', label: 'Branch Name', alignRight: false },
-  { id: 'transfer', label: 'Transfer', alignRight: false }
+  { id: 'Transfer', label: 'Transfer', alignRight: false }
 ];
 
 export default function VATransferCallReport() {
@@ -86,7 +86,7 @@ export default function VATransferCallReport() {
 
   const transferCallValue = getSourceTotal()[config.VA_TRANSFER_CALL_NAME] || 0;
 
-  const total = reportList.reduce((a, b) => a + b.Transfers, 0);
+  const total = reportList.reduce((a, b) => a + b.Transfer, 0);
 
   return (
     <Page title="Report 4 - VA Transfer Call">
@@ -156,11 +156,11 @@ export default function VATransferCallReport() {
 
                     <TableBody>
                       {reportList.map((row) => {
-                        const { Branch, BranchName, Transfers } = row;
+                        const { Branch, BranchName, Transfer } = row;
                         return (
                           <TableRow hover key={Branch} tabIndex={-1}>
                             <TableCell align="left">{BranchName}</TableCell>
-                            <TableCell align="left">{Transfers}</TableCell>
+                            <TableCell align="left">{Transfer}</TableCell>
                           </TableRow>
                         );
                       })}
@@ -168,7 +168,7 @@ export default function VATransferCallReport() {
                         <TableRow hover tabIndex={-1}>
                           <TableCell align="left">TOTAL</TableCell>
                           <TableCell align="left">
-                            {reportList.reduce((a, b) => a + b.Transfers, 0)}
+                            {reportList.reduce((a, b) => a + b.Transfer, 0)}
                           </TableCell>
                         </TableRow>
                       )}
@@ -201,12 +201,12 @@ export default function VATransferCallReport() {
 
                     <TableBody>
                       {reportList.map((row) => {
-                        const { Branch, BranchName, Transfers } = row;
+                        const { Branch, BranchName, Transfer } = row;
                         return (
                           <TableRow hover key={Branch} tabIndex={-1}>
                             <TableCell align="left">{BranchName}</TableCell>
                             <TableCell align="left">
-                              {Transfers > 0 ? transferCallValue / Transfers : 'No Transfer Value'}
+                              {Transfer > 0 ? transferCallValue / Transfer : 'No Transfer Value'}
                             </TableCell>
                           </TableRow>
                         );
@@ -215,7 +215,10 @@ export default function VATransferCallReport() {
                         <TableRow hover tabIndex={-1}>
                           <TableCell align="left">TOTAL</TableCell>
                           <TableCell align="left">
-                            {total > 0 ? transferCallValue / total : 'No Total Value'}
+                            {/* {total > 0 ? transferCallValue / total : 'No Total Value'} */}
+                            {reportList
+                              .filter((i) => i.Transfer > 0)
+                              .reduce((a, b) => a + transferCallValue / b.Transfer, 0)}
                           </TableCell>
                         </TableRow>
                       )}

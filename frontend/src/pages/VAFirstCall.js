@@ -111,6 +111,9 @@ export default function VAFirstCall() {
                             type="number"
                             fullWidth
                             value={canvases}
+                            inputProps={{
+                              maxLength: 25
+                            }}
                             onChange={(event) => {
                               CallList[index].canvases = event.target.value;
                               setCallList([...CallList]);
