@@ -15,7 +15,6 @@ router.get("/getBI", async (req, res) => {
 	}
 });
 
-
 router.get("/getUserBI", validateToken, async (req, res) => {
 	try {
 		const teams = await models.UserTeam.findAll({
@@ -144,27 +143,56 @@ router.post("/addMasterTrack", async (req, res) => {
 
 router.post("/createBranch", async (req, res) => {
 	try {
-		const {branchName, subBIs} = req.body;
+		const {branchName, teams} = req.body;
 		const isValid = models.Branch.validateBranchData({
 			branchName,
-			subBIs
+			teams
 		});
 		if (!isValid) throw new Error("Invalid Data. Please try again !!");
 
 		const branch = await models.Branch.create({
 			BranchName: branchName
 		});
-		const bis = await models.BI.findAll({
+		const teamObjs = await models.Team.findAll({
 			where: {
-				id: subBIs || {},
+				id: teams || {},
 			},
 		});
-		await branch.setBIs(bis);
+		await branch.setTeams(teamObjs);
 		res.status(200).json(branch);
 	} catch (error) {
 		res.status(400).send(error.message);
 	}
 });
+
+router.post("/updateBranch", async (req, res) => {
+	try {
+		const {id, branchName, teams} = req.body;
+        const branch = await models.Branch.findOne({
+            where: {id}
+        })
+        if (!branch) throw new Error("Invalid Branch");
+		const isValid = models.Branch.validateBranchData({
+			branchName,
+			teams
+		});
+        if (!isValid) throw new Error("Invalid Data");
+        user.set({
+			branchName,
+		});
+		const teamObjs = await models.Team.findAll({
+			where: {
+				id: teams || {},
+			},
+		});
+		await branch.setTeams(teamObjs);
+        await user.save()
+		res.status(200).json(branch);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 
 router.put("/updateDatabase", async (req, res) => {
 	try {
@@ -306,8 +334,5 @@ router.get("/getRetentionList", async(req,res)=>{
 		res.status(400).send(error.message);
 	}
 })
-
-
-
 
 export default router;
