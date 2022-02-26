@@ -87,7 +87,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   );
 
   return (
-    <RootStyle>
+    <>
       <MHidden width="lgUp">
         <Drawer
           open={isOpenSidebar}
@@ -102,7 +102,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <MHidden width="lgDown">
         <Drawer
-          open
+          open={isOpenSidebar}
           variant="persistent"
           PaperProps={{
             sx: {
@@ -114,6 +114,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           {renderContent}
         </Drawer>
       </MHidden>
-    </RootStyle>
+    </>
   );
 }
