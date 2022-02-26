@@ -41,9 +41,7 @@ import BranchEditForm from '../components/BranchForm';
 
 const TABLE_HEAD = [
   { id: 'branchName', label: 'Branch Name', alignRight: false },
-  //   { id: 'subBIs', label: 'Email', alignRight: false },
-  //   { id: 'roles', label: 'Roles', alignRight: false },
-  //   { id: 'createdAt', label: 'Created At', alignRight: false },
+  { id: 'teamName', label: 'Teams', alignRight: false },
   { id: '' }
 ];
 
@@ -165,11 +163,13 @@ export default function Branch() {
                               {BranchName}
                             </Typography>
                           </TableCell>
-                          {/* <TableCell align="left">{subBIs}</TableCell> */}
-
-                          {/* <TableCell align="left">
-                            {dayjs(createdAt).format('DD/MM/YYYY')}
-                          </TableCell> */}
+                          <TableCell align="left">
+                            {Teams.map((team) => (
+                              <Label variant="ghost" color="success">
+                                {sentenceCase(team.TeamName)}
+                              </Label>
+                            ))}
+                          </TableCell>
                           <TableCell align="right">
                             <UserMoreMenu
                               list={[

@@ -34,7 +34,6 @@ const paths = [
   { path: 'view', element: <View />, access: roles.View },
   { path: 'report1', element: <Report1 />, access: roles.Report_1 },
   { path: 'report2', element: <Report2 />, access: roles.Report_2 },
-  { path: 'addBranch', element: <AddBranch />, access: roles.Add_Branch },
   { path: 'vafirstcall', element: <VAFirstCall />, access: roles.VA_First_Call },
   { path: 'vatransfercall', element: <VATransferCall />, access: roles.VA_Transfer_Call },
   { path: 'reportvafirstcall', element: <VAFirstCallReport />, access: roles.Report_VA_First_Call },
