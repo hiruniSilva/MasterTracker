@@ -23,6 +23,7 @@ import VAFirstCall from './pages/VAFirstCall';
 import VATransferCall from './pages/VATransferCall';
 import VAFirstCallReport from './pages/VAFirstCallReport';
 import VATransferCallReport from './pages/VATransferCallReport';
+import Branch from './pages/Branch';
 
 // ----------------------------------------------------------------------
 const paths = [
@@ -41,7 +42,8 @@ const paths = [
     path: 'reportvatransfercall',
     element: <VATransferCallReport />,
     access: roles.Report_VA_Transfer_Call
-  }
+  },
+  { path: 'branch', element: <Branch />, access: roles.Add_Branch }
 ];
 export default function Router() {
   const currentUser = useRecoilValue(currentUserState);
