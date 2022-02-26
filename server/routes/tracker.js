@@ -15,6 +15,21 @@ router.get("/getBI", async (req, res) => {
 	}
 });
 
+
+router.get("/getUserBI", validateToken, async (req, res) => {
+	try {
+		const teams = await models.UserTeam.findAll({
+			where: {
+				user: req.user.id
+			},
+			include: [{ all: true }],
+		});
+		res.status(201).json(teams.map(u=>u.BI));
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
 router.get("/getLeadSource", async (req, res) => {
 	try {
 		const leadSources = await models.LeadSource.findAll();

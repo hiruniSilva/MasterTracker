@@ -37,7 +37,7 @@ export default function MasterTrack() {
 
   useEffect(() => {
     axios
-      .get('/api/tracker/getBI')
+      .get('/api/tracker/getUserBI')
       .then((res) => {
         setBiList(res.data);
       })
