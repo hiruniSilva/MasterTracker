@@ -40,6 +40,12 @@ const sidebarConfig = [
     access: roles.View
   },
   {
+    title: 'Branch',
+    path: '/dashboard/branch',
+    icon: getIcon('gridicons:user-add'),
+    access: roles.Add_Branch
+  },
+  {
     title: 'Add Branch',
     path: '/dashboard/addBranch',
     icon: getIcon('eos-icons:branch'),

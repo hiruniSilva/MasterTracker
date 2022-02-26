@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import roles from '../services/roles.config';
 import axios from '../services/api.service';
 
-function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
+function BranchEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
   const [biList, setBiList] = useState([]);
 
   useEffect(() => {
@@ -64,12 +64,12 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
-        <DialogTitle>{!selectedUser.id ? 'Add User' : 'Edit User'}</DialogTitle>
+        <DialogTitle>{!selectedUser.id ? 'Add Branch' : 'Edit Branch'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="Name"
+            label="Branch"
             type="text"
             fullWidth
             {...formik.getFieldProps('fullname')}
@@ -136,4 +136,4 @@ function UserEditForm({ selectedUser, handleSubmit, setSelectedUser }) {
   );
 }
 
-export default UserEditForm;
+export default BranchEditForm;

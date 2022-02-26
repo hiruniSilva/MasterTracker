@@ -193,6 +193,19 @@ router.post("/updateBranch", async (req, res) => {
 	}
 });
 
+router.delete("/deleteBranch", async (req, res) => {
+	try {
+		const { id } = req.query;
+        const branch = await models.Branch.findOne({
+            where: {id}
+        })
+        if (!branch) throw new Error("Invalid Branch Name");
+        await branch.destroy();
+		res.status(200).json(branch);
+	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
 
 router.put("/updateDatabase", async (req, res) => {
 	try {
