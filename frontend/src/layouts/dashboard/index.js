@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { useRecoilValue } from 'recoil';
@@ -23,7 +23,7 @@ const RootStyle = styled('div')({
   overflow: 'hidden'
 });
 
-const MainStyle = styled('div')(({ theme, isOpen }) => ({
+const MainStyle = styled('div')(({ theme, isOpen, currentPath }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
@@ -34,13 +34,19 @@ const MainStyle = styled('div')(({ theme, isOpen }) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     marginLeft: isOpen ? DRAWER_WIDTH : 0
-  }
+  },
+  backgroundImage: ['/dashboard/reportvafirstcall', '/dashboard/reportvatransfercall'].includes(
+    currentPath
+  )
+    ? `url(${'/static/abstract.jpg'})`
+    : '',
+  backgroundSize: 'cover'
 }));
 
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
-  const theme = useTheme();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const currentUser = useRecoilValue(currentUserState);
 
@@ -48,7 +54,7 @@ export default function DashboardLayout() {
     <RootStyle>
       <DashboardNavbar isOpen={open} onOpenSidebar={() => setOpen(!open)} />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-      <MainStyle isOpen={open}>
+      <MainStyle isOpen={open} currentPath={location.pathname}>
         <Outlet />
       </MainStyle>
     </RootStyle>
