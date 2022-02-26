@@ -177,7 +177,7 @@ router.post("/updateBranch", async (req, res) => {
 			teams
 		});
         if (!isValid) throw new Error("Invalid Data");
-        user.set({
+        branch.set({
 			branchName,
 		});
 		const teamObjs = await models.Team.findAll({
@@ -186,7 +186,7 @@ router.post("/updateBranch", async (req, res) => {
 			},
 		});
 		await branch.setTeams(teamObjs);
-        await user.save()
+        await branch.save()
 		res.status(200).json(branch);
 	} catch (error) {
 		res.status(400).send(error.message);
@@ -200,9 +200,24 @@ router.delete("/deleteBranch", async (req, res) => {
             where: {id}
         })
         if (!branch) throw new Error("Invalid Branch Name");
+		const vaTransferCalls = await models.VATransferCall.findAll({
+			where: {
+				Branch: id
+			},
+		});
+		await Promise.all(vaTransferCalls.map(call=>call.destroy()));
         await branch.destroy();
 		res.status(200).json(branch);
 	} catch (error) {
+		res.status(400).send(error.message);
+	}
+});
+
+router.get("/getTeams", async(req,res)=>{
+	try{
+		const teams = await models.Team.findAll({ include: { all: true } });
+		res.status(201).json(teams);
+	}catch(error){
 		res.status(400).send(error.message);
 	}
 });

@@ -60,9 +60,9 @@ export default function Branch() {
       if (selectedBranch.id) {
         console.log({ id: selectedBranch.id, ...data });
         axios
-          .post('/api/user/update', { id: selectedBranch.id, ...data })
+          .post('/api/tracker/updateBranch', { id: selectedBranch.id, ...data })
           .then((res) => {
-            toast.success('User updated successfully');
+            toast.success('Branch updated successfully');
             setSelectedBranch(null);
             fetchData();
           })
@@ -71,9 +71,9 @@ export default function Branch() {
           });
       } else {
         axios
-          .post('/api/user/create', data)
+          .post('/api/tracker/createBranch', data)
           .then((res) => {
-            toast.success('User created successfully');
+            toast.success('Branch created successfully');
             setSelectedBranch(null);
             fetchData();
           })
@@ -157,7 +157,7 @@ export default function Branch() {
                 <TableBody>
                   {BRANCHLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
                     (row) => {
-                      const { id, BranchName } = row;
+                      const { id, BranchName, Teams } = row;
                       return (
                         <TableRow hover key={id} tabIndex={-1}>
                           <TableCell component="th" scope="row">
@@ -180,7 +180,8 @@ export default function Branch() {
                                   onClick: () =>
                                     setSelectedBranch({
                                       id,
-                                      BranchName
+                                      BranchName,
+                                      Teams: Teams.map((i) => i.id)
                                     })
                                 },
                                 {
