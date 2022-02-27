@@ -143,22 +143,22 @@ router.post("/addMasterTrack", async (req, res) => {
 
 router.post("/createBranch", async (req, res) => {
 	try {
-		const {branchName, teams} = req.body;
+		const {branchName, subBis} = req.body;
 		const isValid = models.Branch.validateBranchData({
 			branchName,
-			teams
+			subBis
 		});
 		if (!isValid) throw new Error("Invalid Data. Please try again !!");
 
 		const branch = await models.Branch.create({
 			BranchName: branchName
 		});
-		const teamObjs = await models.Team.findAll({
+		const bis = await models.BI.findAll({
 			where: {
-				id: teams || {},
+				id: subBis || {},
 			},
 		});
-		await branch.setTeams(teamObjs);
+		await branch.setBIs(bis);
 		res.status(200).json(branch);
 	} catch (error) {
 		res.status(400).send(error.message);
@@ -167,25 +167,25 @@ router.post("/createBranch", async (req, res) => {
 
 router.post("/updateBranch", async (req, res) => {
 	try {
-		const {id, branchName, teams} = req.body;
+		const {id, branchName, subBis} = req.body;
         const branch = await models.Branch.findOne({
             where: {id}
         })
         if (!branch) throw new Error("Invalid Branch");
 		const isValid = models.Branch.validateBranchData({
 			branchName,
-			teams
+			subBis
 		});
         if (!isValid) throw new Error("Invalid Data");
         branch.set({
 			branchName,
 		});
-		const teamObjs = await models.Team.findAll({
+		const bis = await models.BI.findAll({
 			where: {
-				id: teams || {},
+				id: subBis || {},
 			},
 		});
-		await branch.setTeams(teamObjs);
+		await branch.setBIs(bis);
         await branch.save()
 		res.status(200).json(branch);
 	} catch (error) {

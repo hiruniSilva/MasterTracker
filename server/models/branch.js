@@ -6,7 +6,7 @@ const yup = require('yup');
 
 const schema = yup.object().shape({
   branchName: yup.string().required(),
-  teams: yup.array().of(yup.number()).min(1).required()
+  subBis: yup.array().of(yup.number()).min(1).required()
 })
 
 
@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       Branch.belongsToMany(models.Team,{
         foreignKey: 'branch',
         through: 'BranchTeams',
+        timestamps: false
+      })
+      Branch.belongsToMany(models.BI,{
+        foreignKey: 'branch',
+        through: 'BranchSubBIs',
         timestamps: false
       })
     }
