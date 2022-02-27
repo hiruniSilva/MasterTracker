@@ -155,7 +155,7 @@ export default function Branch() {
                 <TableBody>
                   {BRANCHLIST.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(
                     (row) => {
-                      const { id, BranchName, Teams } = row;
+                      const { id, BranchName, BIs } = row;
                       return (
                         <TableRow hover key={id} tabIndex={-1}>
                           <TableCell component="th" scope="row">
@@ -164,9 +164,9 @@ export default function Branch() {
                             </Typography>
                           </TableCell>
                           <TableCell align="left">
-                            {Teams.map((team) => (
+                            {BIs.map((bi) => (
                               <Label variant="ghost" color="success">
-                                {sentenceCase(team.TeamName)}
+                                {sentenceCase(bi.BIName)}
                               </Label>
                             ))}
                           </TableCell>
@@ -181,7 +181,7 @@ export default function Branch() {
                                     setSelectedBranch({
                                       id,
                                       BranchName,
-                                      Teams: Teams.map((i) => i.id)
+                                      BIs: BIs.map((i) => i.id)
                                     })
                                 },
                                 {

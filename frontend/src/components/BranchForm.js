@@ -18,14 +18,14 @@ import roles from '../services/roles.config';
 import axios from '../services/api.service';
 
 function BranchEditForm({ selectedBranch, handleSubmit, setSelectedBranch }) {
-  const [teamList, setTeamList] = useState([]);
+  const [biList, setBiList] = useState([]);
 
   useEffect(() => {
     axios
-      .get('/api/tracker/getTeams')
+      .get('/api/tracker/getBI')
       .then((res) => {
         console.log(res.data);
-        setTeamList(res.data);
+        setBiList(res.data);
       })
       .catch((err) => {
         toast.error('Something went wrong. Please try agin later !');
@@ -35,14 +35,14 @@ function BranchEditForm({ selectedBranch, handleSubmit, setSelectedBranch }) {
   const schema = Yup.object().shape({
     branchName: Yup.string().required('Required !'),
     // subBIs: Yup.array().of(Yup.string()).required()
-    teams: Yup.array().of(Yup.number()).min(1, 'Atleast 1 should be selected').required('Required')
+    subBis: Yup.array().of(Yup.number()).min(1, 'Atleast 1 should be selected').required('Required')
     // subBIs: Yup.array().of(Yup.number()).min(1).required('Required')
   });
 
   const formik = useFormik({
     initialValues: {
       branchName: selectedBranch.BranchName || '',
-      teams: selectedBranch.Teams || []
+      subBis: selectedBranch.BIs || []
       // subBIs: subBIs || []
     },
     validationSchema: schema,
@@ -66,16 +66,16 @@ function BranchEditForm({ selectedBranch, handleSubmit, setSelectedBranch }) {
             helperText={formik.touched.branchName && formik.errors.branchName}
           />
           <FormControl fullWidth margin="dense">
-            <InputLabel id="multiple-team-label">Teams</InputLabel>
+            <InputLabel id="multiple-team-label">Sub Bis</InputLabel>
             <Select
               labelId="multiple-team-label"
               multiple
               input={<OutlinedInput label="Name" />}
-              {...formik.getFieldProps('teams')}
+              {...formik.getFieldProps('subBis')}
             >
-              {teamList.map((item) => (
+              {biList.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
-                  {item.TeamName}
+                  {item.BIName}
                 </MenuItem>
               ))}
             </Select>

@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         through: 'UserTeams',
         timestamps: false
       });
+      BI.belongsToMany(models.Branch, {
+        foreignKey: 'subBI', 
+        through: 'BranchSubBIs',
+        timestamps: false
+      });
     }
   }
   BI.init({
