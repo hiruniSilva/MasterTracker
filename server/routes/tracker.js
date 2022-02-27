@@ -242,7 +242,7 @@ router.get("/getMasterTrackersOfDb", async (req, res) => {
 	try {
 		const lsNames = await models.LeadSource.findAll({
 			where: {
-				LeadSourceName: ["VA-First Call", "VA-Transfer Call"],
+				LeadSourceName: ["VA - First Call", "VA - Transfer Call"],
 			},
 		});
 

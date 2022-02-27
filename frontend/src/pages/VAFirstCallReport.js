@@ -21,6 +21,7 @@ import {
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import Logo from '../components/Logo';
 import Scrollbar from '../components/Scrollbar';
 
 // components
@@ -85,10 +86,15 @@ export default function VAFirstCallReport() {
   return (
     <Page title="Report 3 - VA First Call">
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Report 3 - VA First Call
-          </Typography>
+        <Stack direction="row">
+          <Stack alignItems="right" justifyContent="space-between" mb={5}>
+            <Logo />
+          </Stack>
+          <Stack alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              Report 3 - VA First Call
+            </Typography>
+          </Stack>
         </Stack>
 
         <Stack direction="row">

@@ -35,11 +35,7 @@ const MainStyle = styled('div')(({ theme, isOpen, currentPath }) => ({
     paddingRight: theme.spacing(2),
     marginLeft: isOpen ? DRAWER_WIDTH : 0
   },
-  backgroundImage: ['/dashboard/reportvafirstcall', '/dashboard/reportvatransfercall'].includes(
-    currentPath
-  )
-    ? `url(${'/static/abstract.jpg'})`
-    : '',
+  backgroundImage: `url(${'/static/abstract.jpg'})`,
   backgroundSize: 'cover'
 }));
 

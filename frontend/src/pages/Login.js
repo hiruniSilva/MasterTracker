@@ -15,7 +15,9 @@ import AuthSocial from '../components/authentication/AuthSocial';
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
-  }
+  },
+  backgroundImage: `url(${'/static/abstract.jpg'})`,
+  backgroundSize: 'cover'
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({

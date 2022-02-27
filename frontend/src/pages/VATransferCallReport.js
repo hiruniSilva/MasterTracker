@@ -217,7 +217,9 @@ export default function VATransferCallReport() {
                           <TableRow hover key={Branch} tabIndex={-1}>
                             <TableCell align="left">{BranchName}</TableCell>
                             <TableCell align="left">
-                              {Transfer > 0 ? transferCallValue / Transfer : 'No Transfer Value'}
+                              {Transfer > 0
+                                ? (transferCallValue / Transfer).toFixed(2)
+                                : 'No Transfer Value'}
                             </TableCell>
                           </TableRow>
                         );
@@ -234,7 +236,8 @@ export default function VATransferCallReport() {
                             <Typography pl={1} variant="h6" gutterBottom component="div">
                               {reportList
                                 .filter((i) => i.Transfer > 0)
-                                .reduce((a, b) => a + transferCallValue / b.Transfer, 0)}
+                                .reduce((a, b) => a + transferCallValue / b.Transfer, 0)
+                                .toFixed(2)}
                             </Typography>
                           </TableCell>
                         </TableRow>
