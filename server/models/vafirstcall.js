@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      VAFirstCall.belongsTo(models.BI,{ as: 'BIvalue',foreignKey:"BI"})
+      VAFirstCall.belongsTo(models.Team,{ as: 'TeamValue',foreignKey:"Team"})
     }
   }
   VAFirstCall.init({
-    BI: DataTypes.INTEGER,
+    Team: DataTypes.INTEGER,
     canvases: DataTypes.INTEGER,
   }, {
     sequelize,

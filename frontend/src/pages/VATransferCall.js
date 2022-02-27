@@ -110,15 +110,25 @@ export default function VATransferCall() {
                     );
                   })}
                   <TableRow hover tabIndex={-1}>
-                    <TableCell align="left">Total</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>{total}</Typography>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Total
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography pl={1} variant="h6" gutterBottom component="div">
+                        {total}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow hover tabIndex={-1}>
-                    <TableCell align="left">Average</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Average
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography pl={1} variant="h6" gutterBottom component="div">
                         {total > 0 ? transferCallValue / total : 'No Total Value'}
                       </Typography>
                     </TableCell>

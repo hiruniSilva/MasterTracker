@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         through: 'BranchTeams',
         timestamps: false
       });
+
+      Team.hasMany(models.VAFirstCall,{foreignKey:"Team"})
+
     }
   }
   Team.init({

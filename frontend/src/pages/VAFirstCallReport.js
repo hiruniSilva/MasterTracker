@@ -30,7 +30,7 @@ import axios from '../services/api.service';
 import config from '../config';
 
 const TABLE_HEAD = [
-  { id: 'team', label: 'Sub BI', alignRight: false },
+  { id: 'team', label: 'Team Name', alignRight: false },
   { id: 'canvases', label: 'Canvases', alignRight: false }
 ];
 
@@ -142,10 +142,10 @@ export default function VAFirstCallReport() {
 
                 <TableBody>
                   {reportList.map((row) => {
-                    const { BI, BIName, canvases } = row;
+                    const { Team, TeamName, canvases } = row;
                     return (
-                      <TableRow hover key={BI} tabIndex={-1}>
-                        <TableCell align="left">{BIName}</TableCell>
+                      <TableRow hover key={Team} tabIndex={-1}>
+                        <TableCell align="left">{TeamName}</TableCell>
                         <TableCell align="left">{canvases}</TableCell>
                       </TableRow>
                     );
@@ -153,19 +153,31 @@ export default function VAFirstCallReport() {
                   {reportList.length > 0 && (
                     <>
                       <TableRow hover tabIndex={-1}>
-                        <TableCell align="left">TOTAL</TableCell>
                         <TableCell align="left">
-                          {reportList.reduce((a, b) => a + b.canvases, 0)}
+                          <Typography pl={1} variant="h6" gutterBottom component="div">
+                            TOTAL
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Typography pl={1} variant="h6" gutterBottom component="div">
+                            {reportList.reduce((a, b) => a + b.canvases, 0)}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                       <TableRow hover tabIndex={-1}>
-                        <TableCell align="left">VA First Call Convertion</TableCell>
                         <TableCell align="left">
-                          {total > 0
-                            ? ((getSourceTotal()[config.VA_FIRST_CALL_NAME] || 0) / total).toFixed(
-                                2
-                              )
-                            : 'No Total Value'}
+                          <Typography pl={1} variant="h6" gutterBottom component="div">
+                            VA First Call Convertion
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Typography pl={1} variant="h6" gutterBottom component="div">
+                            {total > 0
+                              ? (
+                                  (getSourceTotal()[config.VA_FIRST_CALL_NAME] || 0) / total
+                                ).toFixed(2)
+                              : 'No Total Value'}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                     </>

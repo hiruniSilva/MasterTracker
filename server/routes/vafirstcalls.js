@@ -16,12 +16,12 @@ router.get("/getTodayData", async (req, res) => {
 			},
 			include: [{ all: true }],
 		});
-		const bis = await models.BI.findAll();
-		const data = bis.map((bi) => {
-			let vaCall = vaCalls.find((call) => call.BI == bi.id);
+		const teams = await models.Team.findAll();
+		const data = teams.map((team) => {
+			let vaCall = vaCalls.find((call) => call.Team == team.id);
 			return {
-				BI: bi.id,
-				BIName: bi.BIName,
+				Team: team.id,
+				TeamName: team.TeamName,
 				canvases: vaCall ? vaCall.canvases : null,
 			};
 		});
@@ -61,13 +61,13 @@ router.get("/report", async (req, res) => {
 			include: [{ all: true }],
 		});
 
-		const grouped = _.groupBy(vaCalls, (call) => call.BI);
-		const bis = await models.BI.findAll();
-		const data = bis.map((bi) => {
+		const grouped = _.groupBy(vaCalls, (call) => call.Team);
+		const teams = await models.Team.findAll();
+		const data = teams.map((team) => {
 			return {
-				BI: bi.id,
-				BIName: bi.BIName,
-				canvases: grouped[bi.id] ? grouped[bi.id].reduce((acc, call) => acc + call.canvases, 0) : 0,
+				Team: team.id,
+				TeamName: team.TeamName,
+				canvases: grouped[team.id] ? grouped[team.id].reduce((acc, call) => acc + call.canvases, 0) : 0,
 			};
 		});
 
@@ -92,7 +92,7 @@ router.post("/setTodayData", async (req, res) => {
 		});
 
 		const promises = data.map(async (element) => {
-			let vaCall = vaCalls.find((call) => call.BI == element.bi);
+			let vaCall = vaCalls.find((call) => call.Team == element.team);
 			if (vaCall) {
 				vaCall.set({
 					canvases: element.canvases || null,
@@ -100,7 +100,7 @@ router.post("/setTodayData", async (req, res) => {
 				await vaCall.save();
 			} else {
 				vaCall = await models.VAFirstCall.create({
-					BI: element.bi,
+					Team: element.team,
 					canvases: element.canvases || null,
 				});
 				vaCalls.push(vaCall);

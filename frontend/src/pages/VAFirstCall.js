@@ -24,7 +24,7 @@ import Scrollbar from '../components/Scrollbar';
 import axios from '../services/api.service';
 
 const TABLE_HEAD = [
-  { id: 'biName', label: 'Sub BI Name', alignRight: false },
+  { id: 'teamName', label: 'Team Name', alignRight: false },
   { id: 'canvases', label: 'Canvases', alignRight: false }
 ];
 
@@ -53,7 +53,7 @@ export default function VAFirstCall() {
       .post('/api/vafirstcall/setTodayData', {
         value: transferCallValue,
         data: CallList.map((call) => ({
-          bi: call.BI,
+          team: call.Team,
           canvases: call.canvases
         }))
       })
@@ -101,10 +101,10 @@ export default function VAFirstCall() {
                 </TableHead>
                 <TableBody>
                   {CallList.map((row, index) => {
-                    const { BI, BIName, canvases } = row;
+                    const { Team, TeamName, canvases } = row;
                     return (
-                      <TableRow hover key={BI} tabIndex={-1}>
-                        <TableCell align="left">{BIName}</TableCell>
+                      <TableRow hover key={Team} tabIndex={-1}>
+                        <TableCell align="left">{TeamName}</TableCell>
                         <TableCell align="left">
                           <TextField
                             margin="dense"
@@ -124,15 +124,25 @@ export default function VAFirstCall() {
                     );
                   })}
                   <TableRow hover tabIndex={-1}>
-                    <TableCell align="left">Total</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>{total}</Typography>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Total
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography pl={1} variant="h6" gutterBottom component="div">
+                        {total}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow hover tabIndex={-1}>
-                    <TableCell align="left">Average</TableCell>
                     <TableCell align="left">
-                      <Typography pl={1}>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Average
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography pl={1} variant="h6" gutterBottom component="div">
                         {headCount > 0 ? total / headCount : 'Set Head Count to view Average'}
                       </Typography>
                     </TableCell>

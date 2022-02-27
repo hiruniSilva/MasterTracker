@@ -35,6 +35,11 @@ const TABLE_HEAD = [
   { id: 'Transfer', label: 'Transfer', alignRight: false }
 ];
 
+const TABLE_HEAD_RATIO = [
+  { id: 'branch', label: 'Branch Name', alignRight: false },
+  { id: 'Transfer', label: 'Transfer Ratio', alignRight: false }
+];
+
 export default function VATransferCallReport() {
   const [reportList, setreportList] = useState([]);
   const [sourceList, setSourceList] = useState([]);
@@ -166,9 +171,15 @@ export default function VATransferCallReport() {
                       })}
                       {reportList.length > 0 && (
                         <TableRow hover tabIndex={-1}>
-                          <TableCell align="left">TOTAL</TableCell>
                           <TableCell align="left">
-                            {reportList.reduce((a, b) => a + b.Transfer, 0)}
+                            <Typography pl={1} variant="h6" gutterBottom component="div">
+                              TOTAL
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">
+                            <Typography pl={1} variant="h6" gutterBottom component="div">
+                              {reportList.reduce((a, b) => a + b.Transfer, 0)}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                       )}
@@ -188,7 +199,7 @@ export default function VATransferCallReport() {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        {TABLE_HEAD.map((headCell) => (
+                        {TABLE_HEAD_RATIO.map((headCell) => (
                           <TableCell
                             key={headCell.id}
                             align={headCell.alignRight ? 'right' : 'left'}
@@ -213,12 +224,18 @@ export default function VATransferCallReport() {
                       })}
                       {reportList.length > 0 && (
                         <TableRow hover tabIndex={-1}>
-                          <TableCell align="left">TOTAL</TableCell>
+                          <TableCell align="left">
+                            <Typography pl={1} variant="h6" gutterBottom component="div">
+                              TOTAL
+                            </Typography>
+                          </TableCell>
                           <TableCell align="left">
                             {/* {total > 0 ? transferCallValue / total : 'No Total Value'} */}
-                            {reportList
-                              .filter((i) => i.Transfer > 0)
-                              .reduce((a, b) => a + transferCallValue / b.Transfer, 0)}
+                            <Typography pl={1} variant="h6" gutterBottom component="div">
+                              {reportList
+                                .filter((i) => i.Transfer > 0)
+                                .reduce((a, b) => a + transferCallValue / b.Transfer, 0)}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                       )}

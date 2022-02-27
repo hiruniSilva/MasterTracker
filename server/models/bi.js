@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       BI.hasMany(models.MasterTrack,{foreignKey:"BI"})
-      BI.hasMany(models.VAFirstCall,{foreignKey:"BI"})
       BI.belongsToMany(models.User, {
         foreignKey: 'bi', 
         through: 'UserTeams',
