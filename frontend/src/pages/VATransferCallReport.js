@@ -73,9 +73,10 @@ export default function VATransferCallReport() {
       });
   }, [value1, value2]);
 
-  const getSourceTotal = () => {
+  const getSourceTotal = (BIs) => {
     const data = {};
     sourceList
+      .filter((bi) => BIs.includes(bi.ID))
       .map((i) => i.Sources)
       .flat()
       .forEach((i) => {
@@ -84,9 +85,17 @@ export default function VATransferCallReport() {
     return data;
   };
 
-  const transferCallValue = getSourceTotal()[config.VA_TRANSFER_CALL_NAME] || 0;
-
-  const total = reportList.reduce((a, b) => a + b.Transfer, 0);
+  const reportListRatio = reportList.map(({ BranchName, BIs, Transfer }) => {
+    const val = {
+      BranchName,
+      ratio:
+        Transfer > 0
+          ? (getSourceTotal(BIs)[config.VA_TRANSFER_CALL_NAME] || 0) / Transfer
+          : 'No Transfer Value'
+    };
+    console.log(val);
+    return val;
+  });
 
   return (
     <Page title="Report 4 - VA Transfer Call">
@@ -200,14 +209,12 @@ export default function VATransferCallReport() {
                     </TableHead>
 
                     <TableBody>
-                      {reportList.map((row) => {
-                        const { Branch, BranchName, Transfer } = row;
+                      {reportListRatio.map((row) => {
+                        const { BranchName, ratio } = row;
                         return (
-                          <TableRow hover key={Branch} tabIndex={-1}>
+                          <TableRow hover key={BranchName} tabIndex={-1}>
                             <TableCell align="left">{BranchName}</TableCell>
-                            <TableCell align="left">
-                              {Transfer > 0 ? transferCallValue / Transfer : 'No Transfer Value'}
-                            </TableCell>
+                            <TableCell align="left">{ratio}</TableCell>
                           </TableRow>
                         );
                       })}
@@ -215,10 +222,9 @@ export default function VATransferCallReport() {
                         <TableRow hover tabIndex={-1}>
                           <TableCell align="left">TOTAL</TableCell>
                           <TableCell align="left">
-                            {/* {total > 0 ? transferCallValue / total : 'No Total Value'} */}
-                            {reportList
-                              .filter((i) => i.Transfer > 0)
-                              .reduce((a, b) => a + transferCallValue / b.Transfer, 0)}
+                            {reportListRatio
+                              .filter((i) => i.ratio === 'No Total Value')
+                              .reduce((a, b) => a + b.ratio, 0)}
                           </TableCell>
                         </TableRow>
                       )}

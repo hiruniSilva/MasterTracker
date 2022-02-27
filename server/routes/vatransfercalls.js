@@ -57,11 +57,14 @@ router.get("/report", async (req, res) => {
 		});
 
 		const grouped = _.groupBy(vaTransferCalls, (call) => call.Branch);
-		const branches = await models.Branch.findAll();
+		const branches = await models.Branch.findAll({
+			include: [{ all: true }],
+		});
 		const data = branches.map((branch) => {
 			return {
 				Branch: branch.id,
 				BranchName: branch.BranchName,
+				BIs: branch.BIs.map(i=>i.id),
 				Transfer: grouped[branch.id] ? grouped[branch.id].reduce((acc, call) => acc + call.Transfer, 0) : 0,
 			};
 		});

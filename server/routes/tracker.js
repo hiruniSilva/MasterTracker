@@ -314,6 +314,7 @@ router.get("/report1", async (req, res) => {
 		}
 		const groupedTracks = _.groupBy(masterTracks, (item)=>item.BI)
 		const groupedTracksValues = Object.keys(groupedTracks).map(key=>({
+			ID: groupedTracks[key][0].BIvalue.id,
 			BIName: groupedTracks[key][0].BIvalue.BIName,
 			NoFTD: groupedTracks[key].length,
 			FTDAmount: getFTDAmounts(groupedTracks[key]),
