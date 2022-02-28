@@ -143,7 +143,9 @@ export default function VAFirstCall() {
                     </TableCell>
                     <TableCell align="left">
                       <Typography pl={1} variant="h6" gutterBottom component="div">
-                        {headCount > 0 ? total / headCount : 'Set Head Count to view Average'}
+                        {headCount > 0
+                          ? (total / headCount).toFixed(2)
+                          : 'Set Head Count to view Average'}
                       </Typography>
                     </TableCell>
                   </TableRow>

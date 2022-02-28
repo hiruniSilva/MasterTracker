@@ -22,6 +22,7 @@ import {
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import Logo from '../components/Logo';
 import Scrollbar from '../components/Scrollbar';
 
 // components
@@ -105,10 +106,15 @@ export default function VATransferCallReport() {
   return (
     <Page title="Report 4 - VA Transfer Call">
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Report 4 - VA Transfer Call
-          </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              Report 4 - VA Transfer Call
+            </Typography>
+          </Stack>
+          <Stack alignItems="right" justifyContent="space-between" mb={5}>
+            <Logo />
+          </Stack>
         </Stack>
 
         <Stack direction="row">
@@ -222,10 +228,13 @@ export default function VATransferCallReport() {
                     <TableBody>
                       {reportListRatio.map((row) => {
                         const { BranchName, ratio } = row;
+                        console.log(ratio);
                         return (
                           <TableRow hover key={BranchName} tabIndex={-1}>
                             <TableCell align="left">{BranchName}</TableCell>
-                            <TableCell align="left">{isNaN(ratio) ? ratio :ratio.toFixed(2)}</TableCell>
+                            <TableCell align="left">
+                              {ratio !== 'No Transfer Value' ? ratio.toFixed(2) : ratio}
+                            </TableCell>
                           </TableRow>
                         );
                       })}
@@ -239,9 +248,10 @@ export default function VATransferCallReport() {
                           <TableCell align="left">
                             {/* {total > 0 ? transferCallValue / total : 'No Total Value'} */}
                             <Typography pl={1} variant="h6" gutterBottom component="div">
-                            {reportListRatio
-                              .filter((i) => i.ratio === 'No Total Value')
-                              .reduce((a, b) => a + b.ratio, 0).toFixed(2)}
+                              {reportListRatio
+                                .filter((i) => i.ratio !== 'No Transfer Value')
+                                .reduce((a, b) => a + b.ratio, 0)
+                                .toFixed(2)}
                             </Typography>
                           </TableCell>
                         </TableRow>

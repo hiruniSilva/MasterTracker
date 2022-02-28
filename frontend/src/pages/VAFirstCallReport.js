@@ -86,14 +86,14 @@ export default function VAFirstCallReport() {
   return (
     <Page title="Report 3 - VA First Call">
       <Container>
-        <Stack direction="row">
-          <Stack alignItems="right" justifyContent="space-between" mb={5}>
-            <Logo />
-          </Stack>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
           <Stack alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
               Report 3 - VA First Call
             </Typography>
+          </Stack>
+          <Stack alignItems="right" justifyContent="space-between" mb={5}>
+            <Logo />
           </Stack>
         </Stack>
 

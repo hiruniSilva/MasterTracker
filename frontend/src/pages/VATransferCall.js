@@ -129,7 +129,7 @@ export default function VATransferCall() {
                     </TableCell>
                     <TableCell align="left">
                       <Typography pl={1} variant="h6" gutterBottom component="div">
-                        {total > 0 ? transferCallValue / total : 'No Total Value'}
+                        {total > 0 ? (transferCallValue / total).toFixed(2) : 'No Total Value'}
                       </Typography>
                     </TableCell>
                   </TableRow>

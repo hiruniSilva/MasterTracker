@@ -41,7 +41,7 @@ import BranchEditForm from '../components/BranchForm';
 
 const TABLE_HEAD = [
   { id: 'branchName', label: 'Branch Name', alignRight: false },
-  { id: 'teamName', label: 'Teams', alignRight: false },
+  { id: 'teamName', label: 'Sub BI', alignRight: false },
   { id: '' }
 ];
 
